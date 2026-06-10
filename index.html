@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BayDev Palawan | Engineering Excellence</title>
+    <!-- Dependencies -->
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        html, body { overflow-x: hidden; width: 100%; position: relative; }
+        body { font-family: 'Inter', sans-serif; background-color: #050a0a; color: white; }
+        
+        /* Custom background grid with mask for that Verteal vibe */
+        .bg-grid-verteal {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        /* Service card bullet styling */
+        .service-card ul li::before { content: "→"; color: #ffffff; margin-right: 10px; }
+
+        /* Animation specific masks */
+        .reveal-word { display: inline-block; clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
+
+        /* 3D Social Buttons Styling */
+        .social-container { display: flex; justify-content: center; align-items: center; margin-top: 2rem; flex-wrap: wrap; gap: 12px; }
+        .social-child {
+            width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;
+            transform-style: preserve-3d; transition: all 0.3s cubic-bezier(0.68, 0.85, 0.265, 1.85);
+            border-radius: 5px; background: rgba(255,255,255,0.05);
+            box-shadow: inset 1px 1px 2px rgba(255,255,255,0.2), 0 0 5px rgba(0,0,0,0.2);
+            will-change: transform;
+        }
+        @media (min-width: 768px) {
+            .social-container { justify-content: flex-start; gap: 15px; }
+            .social-child { width: 60px; height: 60px; }
+        }
+        .social-child:hover {
+            background-color: white;
+            transform: perspective(180px) rotateX(60deg) translateY(2px);
+        }
+        .child-discord:hover { box-shadow: 0px 10px 20px #5865F2; }
+        .child-instagram:hover { box-shadow: 0px 10px 20px #ff00ff; }
+        .child-github:hover { box-shadow: 0px 10px 20px #ffffff; background-color: #000; }
+        .child-whatsapp:hover { box-shadow: 0px 10px 20px #25D366; }
+        .child-facebook:hover { box-shadow: 0px 10px 20px #4267b2; }
+
+        .social-button {
+            cursor: pointer; width: 100%; height: 100%; border: none;
+            background-color: transparent; display: flex; justify-content: center; align-items: center;
+            transition-duration: 0.5s; transition-timing-function: cubic-bezier(0.68, -0.85, 0.265, 1.55);
+        }
+        .social-child:hover > .social-button {
+            transform: translate3d(0px, 20px, 30px) perspective(80px) rotateX(-60deg) translateY(2px) translateZ(10px);
+        }
+        .social-button svg { width: 28px; height: 28px; fill: white; transition: fill 0.3s; }
+        .social-child:hover svg { fill: #050a0a; } /* Invert icon color on hover */
+        
+        /* Override specific hover colors to match brand colors */
+        .child-discord:hover svg { fill: #5865F2; }
+        .child-instagram:hover svg { fill: #ff00ff; }
+        .child-github:hover svg { fill: #ffffff; }
+        .child-whatsapp:hover svg { fill: #25D366; }
+        .child-facebook:hover svg { fill: #4267b2; }
+
+        /* Portfolio Card Styles */
+        .project-card {
+            position: relative;
+            width: 280px;
+            height: 200px;
+            margin-right: 30px;
+            background: #000;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+            cursor: pointer;
+            will-change: transform;
+        }
+        
+        @media (min-width: 768px) {
+            .project-card {
+                width: 500px;
+                height: 350px;
+                margin-right: 80px;
+            }
+        }
+
+        .project-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            will-change: transform, scale;
+        }
+
+        .project-card:hover {
+            transform: rotate(-3deg) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .project-info {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            pointer-events: none;
+        }
+
+        .project-card:hover .project-info {
+            transform: translate(-50%, -50%) rotate(0deg);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .project-card:hover .project-image {
+            transform: rotate(-45deg) scale(0);
+        }
+
+        .project-title { margin: 0; font-size: 24px; color: #050a0a; font-weight: 800; }
+        .project-description { margin: 12px 0 0; font-size: 14px; color: #555; line-height: 1.5; }
+
+        /* Hover effect for cards without transition-all conflict */
+        .reveal-card { 
+            transition: border-color 0.3s, background-color 0.3s, transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), backdrop-filter 0.3s;
+        }
+        /* Only apply generic blur hover to simple cards, avoiding conflict with 3D cards */
+        .reveal-card:not(.card-effect):hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(12px);
+        }
+        /* Service Icon Hover Animation */
+        .service-icon {
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .service-card:hover .service-icon {
+            transform: scale(1.2) translateY(-5px);
+            color: white;
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.3));
+        }
+        .service-card:hover { transform: translateY(-10px) !important; }
+
+        /* Hero Slideshow Styles */
+        .hero-slideshow::before {
+            content: '';
+            position: absolute;
+            inset: -1px; /* Overlap slightly to prevent sub-pixel seams */
+            background: linear-gradient(to right, #050a0a 0%, rgba(5, 10, 10, 0) 100%);
+            z-index: 10;
+        }
+        @media (max-width: 767px) {
+            .hero-slideshow::before {
+                background: linear-gradient(to bottom, #050a0a 0%, rgba(5, 10, 10, 0.4) 50%, #050a0a 100%);
+            }
+        }
+
+        /* Web Solutions Card Animations */
+        .card-effect { perspective: 1000px; }
+        .card-inner {
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-text: white;
+            --card-accent: white;
+            width: 100%;
+            min-height: 420px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d;
+        }
+        .card-inner:hover {
+            transform: rotateY(10deg) rotateX(10deg) translateZ(10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+        }
+
+        /* Tech Stack Icons */
+        .tech-icon-inner {
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            perspective: 1000px;
+            transform-style: preserve-3d; /* Needed for 3D transforms */
+        }
+
+        .tech-icon-item:hover .tech-icon-inner {
+            transform: rotateY(10deg) rotateX(10deg) translateZ(20px);
+        }
+
+        .card__liquid {
+            position: absolute; top: -80px; left: 0; width: 100%; height: 200px;
+            background: rgba(255, 255, 255, 0.15); border-radius: 50%;
+            transform: translateZ(-80px); filter: blur(80px);
+            transition: transform 0.7s cubic-bezier(0.36, 0, 0.66, -0.56), opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+
+        .card-inner:hover .card__liquid {
+            transform: translateZ(-50px) translateY(30px) translateX(-20px) rotate(-20deg) scale(1.2);
+            opacity: 0.7;
+        }
+
+        .card__shine {
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 70%);
+            opacity: 0; transition: opacity 0.4s ease-in-out;
+        }
+
+        .card-inner:hover .card__shine { opacity: 1; animation: shine-effect 2s infinite linear; }
+
+        .card__glow {
+            position: absolute; inset: -15px;
+            background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            opacity: 0; transition: opacity 0.6s ease-in-out;
+        }
+
+        .card-inner:hover .card__glow { opacity: 1; }
+
+        .card__content {
+            padding: 2rem; height: 100%; display: flex; flex-direction: column;
+            gap: 1rem; position: relative; z-index: 2;
+        }
+
+        .card__badge {
+            position: absolute; top: 20px; right: 20px; background: white;
+            color: #050a0a; padding: 4px 12px; border-radius: 999px;
+            font-size: 0.75rem; font-weight: 800; transform: scale(0.7);
+            opacity: 0; transition: all 0.5s ease 0.2s;
+        }
+
+        .card-inner:hover .card__badge { transform: scale(1); opacity: 1; z-index: 10; }
+
+        .card__image {
+            width: 100%; height: 140px; background: var(--bg-color); border-radius: 15px;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative; overflow: hidden; box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .card-inner:hover .card__image { transform: translateY(-8px) scale(1.05); }
+
+        .card__image::after {
+            content: ""; position: absolute; inset: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 40%),
+                        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 3px, transparent 3px, transparent 6px);
+            opacity: 0.6;
+        }
+
+        .card__title {
+            color: var(--card-text); font-size: 1.5rem; margin: 0;
+            font-weight: 800; transition: all 0.4s ease-in-out;
+        }
+
+        .card__description {
+            color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; margin: 0;
+            line-height: 1.5; transition: all 0.4s ease-in-out;
+        }
+
+        .card-inner:hover .card__title, .card-inner:hover .card__description { transform: translateX(5px); }
+        .card-inner:hover .card__description { color: white; }
+
+        .card__footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+
+        .card__price {
+            color: var(--card-text); font-weight: 700; font-size: 1.1rem;
+            transition: all 0.4s ease-in-out;
+        }
+
+        .card-inner:hover .card__price { transform: translateX(3px); opacity: 1; }
+
+        .card__button {
+            width: 40px; height: 40px; background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #050a0a; transition: all 0.4s; transform: scale(0.85);
+        }
+
+        .card-inner:hover .card__button {
+            transform: scale(1); box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+
+        .card-inner:hover .card__button svg { animation: pulse-button 1.5s infinite; }
+
+        @keyframes shine-effect {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        @keyframes pulse-button {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* Floating CTA Visibility */
+        #floatingCTA.visible {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Fix for horizontal scroll on mobile */
+        .portfolio-wrap {
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+            touch-action: pan-y;
+        }
+
+        /* Header Scrolled State */
+        #main-header.scrolled {
+            background: rgba(5, 10, 10, 0.9); /* Darker background when scrolled */
+            backdrop-filter: blur(15px);
+            padding-top: 0.5rem;   /* Shrink header height on scroll */
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+    <style>
+        /* FAQ Card Styles */
+        .faq-card {
+            width: 100%;
+            max-width: 300px;
+            height: 140px; 
+            padding: 0.5rem;
+            background: rgba(198, 198, 198, 0.34); /* Semi-transparent white background */
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.440);
+            border-left: 2px solid rgba(255, 255, 255, 0.545);
+            box-shadow: -40px 50px 30px rgba(0, 0, 0, 0.280);
+            transition: all .4s ease-in-out;
+            overflow: hidden;
+            color: white;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            will-change: transform, height;
+        }
+
+        @media (min-width: 768px) {
+            .faq-card { transform: skewX(10deg); }
+            .faq-card.right-facing { transform: skewX(-10deg); }
+        }
+
+        .faq-card:hover {
+            height: 260px; /* Uniform expanded height for all cards */
+            transform: skewX(0deg); /* Removes skew on hover */
+            backdrop-filter: blur(15px);
+        }
+
+        .faq-card .align {
+            padding: 1rem;
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+            align-self: flex-start;
+            width: 100%;
+        }
+
+        .faq-card .red-dot,
+        .faq-card .yellow-dot,
+        .faq-card .green-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.280);
+        }
+
+        .faq-card .red-dot { background-color: #ff605c; }
+        .faq-card .yellow-dot { background-color: #ffbd44; }
+        .faq-card .green-dot { background-color: #00ca4e; }
+
+        .faq-card h1 {
+            text-align: center;
+            margin: 1.3rem;
+            color: rgb(218, 244, 237);
+            text-shadow: -10px 5px 10px rgba(0, 0, 0, 0.573);
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .faq-card p {
+            padding: 0 1.2rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            text-align: center;
+            opacity: 0; /* Hidden initially */
+            transition: opacity .3s ease-in-out;
+        }
+
+        .faq-card:hover p {
+            opacity: 1; /* Visible on hover */
+        }
+    </style>
+</head>
+<body class="m-0 p-0 antialiased">
+    <!-- Particles Background Container -->
+    <div id="particles-js" class="fixed inset-0 z-[-1] pointer-events-none"></div>
+
+    <div class="progress-wrap fixed top-0 left-0 w-full h-[3px] bg-white/10 z-[1000]">
+        <div class="progress-bar w-0 h-full bg-white"></div>
+    </div>
+    
+    <svg width="0" height="0" style="position: absolute;">
+      <defs>
+        <clipPath id="squircleClip" clipPathUnits="objectBoundingBox"><path d="M 0,0.5 C 0,0 0,0 0.5,0 S 1,0 1,0.5 1,1 0.5,1 0,1 0,0.5"></path></clipPath>
+      </defs>
+    </svg>
+
+    <header id="main-header" class="fixed top-0 left-0 w-full px-6 md:px-[8%] py-6 flex justify-between items-center z-[1001] transition-all duration-300">
+        <div class="logo-container logo lg:flex-1">
+            <a href="#" class="flex items-center">
+                <img src="baydevlogo.png" alt="Bay Dev Logo" class="h-10 brightness-0 invert opacity-0">
+            </a>
+        </div>
+        <nav class="hidden lg:flex items-center justify-center gap-8">
+            <a href="#why-choose" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">Why Us</a>
+            <a href="#services" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">Services</a>
+            <a href="#process" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">Process</a>
+            <a href="#tech-stack" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">Tech Stack</a>
+            <a href="#portfolio" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">Portfolio</a>
+            <a href="#web-packages" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">Pricing</a>
+            <a href="#faq" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">FAQ</a>
+        </nav>
+        <div class="hidden lg:flex lg:flex-1 justify-end items-center">
+            <button id="openProjectModal" class="px-6 py-2 bg-white text-black rounded-full text-sm font-bold hover:scale-105 transition-transform">Get Started</button>
+        </div>
+        <button id="mobileMenuBtn" class="lg:hidden text-white flex items-center p-2 z-[1010]" aria-label="Open Mobile Menu">
+            <iconify-icon icon="ph:list-bold" class="text-3xl"></iconify-icon>
+        </button>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu" class="fixed inset-0 z-[2005] bg-[#050a0a] flex flex-col items-center justify-center gap-8 translate-x-full transition-transform duration-500">
+        <button id="closeMobileMenuBtn" class="absolute top-8 right-[8%] text-white">
+            <iconify-icon icon="ph:x-bold" class="text-3xl"></iconify-icon>
+        </button>
+        <a href="#why-choose" class="mobile-link text-2xl font-bold">Why Us</a>
+        <a href="#services" class="mobile-link text-2xl font-bold">Services</a>
+        <a href="#process" class="mobile-link text-2xl font-bold">Process</a>
+        <a href="#tech-stack" class="mobile-link text-2xl font-bold">Tech Stack</a>
+        <a href="#portfolio" class="mobile-link text-2xl font-bold">Portfolio</a>
+        <a href="#faq" class="mobile-link text-2xl font-bold">FAQ</a>
+        <a href="#contact" class="mobile-link px-8 py-3 bg-white text-black rounded-full font-bold">Contact Us</a>
+    </div>
+
+    <section class="hero relative h-screen overflow-hidden flex items-center px-6 md:px-[8%] py-20 md:py-[100px]">
+        <div class="hero-content z-20 relative">
+            <h1 class="split-text text-[clamp(2.5rem,10vw,8rem)] leading-[1.1] font-extrabold tracking-[-2px]">Bay Dev <br>Palawan</h1>
+            <p class="fade-up max-w-[700px] mt-8 text-white/60 text-[1.2rem]">
+                Bay Developers transforms ideas into modern websites and custom software solutions designed to help you grow.
+            </p>
+            <div class="fade-up mt-12 flex items-center">
+                <a href="#portfolio" class="px-[35px] py-[15px] rounded-full font-semibold transition-all duration-300 inline-block cursor-pointer bg-white text-black hover:scale-105">View Our Work</a>
+                <a href="#contact" class="px-[35px] py-[15px] rounded-full font-semibold transition-all duration-300 inline-block cursor-pointer border border-white text-white bg-transparent ml-[15px] hover:bg-white/10">Free Consultation</a>
+            </div>
+        </div>
+        
+        <!-- Slideshow Container -->
+        <div class="hero-slideshow absolute right-0 top-0 w-full md:w-1/2 h-full z-0 pointer-events-none">
+            <div class="slide absolute inset-0 opacity-0 bg-cover bg-center will-change-[opacity]" style="background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=2072');"></div>
+            <div class="slide absolute inset-0 opacity-0 bg-cover bg-center will-change-[opacity]" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2026');"></div>
+            <div class="slide absolute inset-0 opacity-0 bg-cover bg-center will-change-[opacity]" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2070');"></div>
+        </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section class="py-20 md:py-[100px] px-6 md:px-[8%] relative z-10" id="why-choose">
+        <div class="mb-16">
+            <h2 class="text-4xl md:text-[3.5rem] font-bold fade-up">Why Choose Bay Developers</h2>
+            <p class="text-white/60 mt-4 fade-up">Committed to excellence in every line of code.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <h3 class="text-white text-xl font-bold mb-4">Professional Development</h3>
+                <p class="text-white/60">We build modern websites and systems using the latest technologies and industry standards.</p>
+            </div>
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <h3 class="text-white text-xl font-bold mb-4">Custom Solutions</h3>
+                <p class="text-white/60">Every project is designed according to your specific business requirements.</p>
+            </div>
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <h3 class="text-white text-xl font-bold mb-4">Responsive Design</h3>
+                <p class="text-white/60">Our websites look and perform beautifully on desktops, tablets, and mobile devices.</p>
+            </div>
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <h3 class="text-white text-xl font-bold mb-4">Reliable Support</h3>
+                <p class="text-white/60">We provide ongoing maintenance and technical support after deployment.</p>
+            </div>
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <h3 class="text-white text-xl font-bold mb-4">Affordable Pricing</h3>
+                <p class="text-white/60">High-quality solutions tailored to fit your budget.</p>
+            </div>
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <h3 class="text-white text-xl font-bold mb-4">Client-Focused Approach</h3>
+                <p class="text-white/60">Your success is our priority from planning to deployment.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Services Section -->
+    <section class="services px-6 md:px-[8%] py-20 md:py-[100px]" id="services">
+        <div class="w-full">
+            <h2 class="text-4xl md:text-[3.5rem] mb-12 font-bold fade-up">Our Services</h2>
+            <div class="services-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="service-card reveal-card p-12 bg-white/5 rounded-[30px] border border-transparent hover:border-white">
+                    <div class="mb-6">
+                        <iconify-icon icon="ph:globe-duotone" class="service-icon text-5xl text-white/30"></iconify-icon>
+                    </div>
+                    <h3 class="text-white text-2xl font-bold mb-6">Website Development</h3>
+                    <p class="text-white/60 mb-4 text-sm">Professional websites designed to establish your online presence and attract customers.</p>
+                    <ul class="text-white/60 space-y-2 text-sm"><li>Business & Corporate Websites</li><li>Landing Pages</li><li>Personal Portfolios</li><li>Organization Websites</li></ul>
+                </div>
+                <div class="service-card reveal-card p-12 bg-white/5 rounded-[30px] border border-transparent hover:border-white">
+                    <div class="mb-6">
+                        <iconify-icon icon="ph:layout-duotone" class="service-icon text-5xl text-white/30"></iconify-icon>
+                    </div>
+                    <h3 class="text-white text-2xl font-bold mb-6">Web-Based Systems</h3>
+                    <p class="text-white/60 mb-4 text-sm">Custom systems that automate operations and improve efficiency.</p>
+                    <ul class="text-white/60 space-y-2 text-sm"><li>Inventory & School Management</li><li>Booking & Appointment Systems</li><li>Monitoring & Custom Dashboards</li></ul>
+                </div>
+                <div class="service-card reveal-card p-12 bg-white/5 rounded-[30px] border border-transparent hover:border-white">
+                    <div class="mb-6">
+                        <iconify-icon icon="ph:shopping-bag-duotone" class="service-icon text-5xl text-white/30"></iconify-icon>
+                    </div>
+                    <h3 class="text-white text-2xl font-bold mb-6">E-Commerce Development</h3>
+                    <p class="text-white/60 mb-4 text-sm">Online stores designed to increase sales and improve customer experience.</p>
+                    <ul class="text-white/60 space-y-2 text-sm"><li>Product Management</li><li>Online Payments</li><li>Order Tracking</li></ul>
+                </div>
+                <div class="service-card reveal-card p-12 bg-white/5 rounded-[30px] border border-transparent hover:border-white">
+                    <div class="mb-6">
+                        <iconify-icon icon="ph:student-duotone" class="service-icon text-5xl text-white/30"></iconify-icon>
+                    </div>
+                    <h3 class="text-white text-2xl font-bold mb-6">School & Capstone</h3>
+                    <p class="text-white/60 mb-4 text-sm">Professional and innovative systems for academic requirements.</p>
+                    <ul class="text-white/60 space-y-2 text-sm"><li>Information & Management Systems</li><li>Monitoring & Database Systems</li></ul>
+                </div>
+                <div class="service-card reveal-card p-12 bg-white/5 rounded-[30px] border border-transparent hover:border-white">
+                    <div class="mb-6">
+                        <iconify-icon icon="ph:paint-brush-broad-duotone" class="service-icon text-5xl text-white/30"></iconify-icon>
+                    </div>
+                    <h3 class="text-white text-2xl font-bold mb-6">UI/UX Design</h3>
+                    <p class="text-white/60 mb-4 text-sm">Beautiful and intuitive user interfaces focused on experience and functionality.</p>
+                </div>
+                <div class="service-card reveal-card p-12 bg-white/5 rounded-[30px] border border-transparent hover:border-white">
+                    <div class="mb-6">
+                        <iconify-icon icon="ph:gear-duotone" class="service-icon text-5xl text-white/30"></iconify-icon>
+                    </div>
+                    <h3 class="text-white text-2xl font-bold mb-6">Maintenance & Support</h3>
+                    <p class="text-white/60 mb-4 text-sm">Keeping your website or system secure, updated, and performing at its best.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Development Process Section -->
+    <section class="py-20 md:py-[100px] px-6 md:px-[8%] relative z-10" id="process">
+        <div class="mb-16">
+            <h2 class="text-4xl md:text-[3.5rem] font-bold fade-up">Development Process</h2>
+            <p class="text-white/60 mt-4 fade-up">From initial spark to final deployment, we guide you every step of the way.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="reveal-card p-8 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="text-4xl font-black text-white/10 mb-4">01</div>
+                <h3 class="text-white text-xl font-bold mb-3">Discovery & Consultation</h3>
+                <p class="text-white/60 text-sm">We understand your goals, requirements, and vision for the project.</p>
+            </div>
+            <div class="reveal-card p-8 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="text-4xl font-black text-white/10 mb-4">02</div>
+                <h3 class="text-white text-xl font-bold mb-3">Planning & Strategy</h3>
+                <p class="text-white/60 text-sm">We create a detailed roadmap and system architecture.</p>
+            </div>
+            <div class="reveal-card p-8 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="text-4xl font-black text-white/10 mb-4">03</div>
+                <h3 class="text-white text-xl font-bold mb-3">Design</h3>
+                <p class="text-white/60 text-sm">We design modern and user-friendly interfaces.</p>
+            </div>
+            <div class="reveal-card p-8 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="text-4xl font-black text-white/10 mb-4">04</div>
+                <h3 class="text-white text-xl font-bold mb-3">Development</h3>
+                <p class="text-white/60 text-sm">Our team transforms designs into fully functional solutions.</p>
+            </div>
+            <div class="reveal-card p-8 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="text-4xl font-black text-white/10 mb-4">05</div>
+                <h3 class="text-white text-xl font-bold mb-3">Testing & QA</h3>
+                <p class="text-white/60 text-sm">We thoroughly test every feature before launch.</p>
+            </div>
+            <div class="reveal-card p-8 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="text-4xl font-black text-white/10 mb-4">06</div>
+                <h3 class="text-white text-xl font-bold mb-3">Deployment & Support</h3>
+                <p class="text-white/60 text-sm">We launch your project and provide ongoing assistance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="tech-stack py-20 md:py-[100px] px-6 md:px-[8%] relative z-10" id="tech-stack">
+        <h2 class="text-4xl md:text-[3.5rem] font-bold fade-up mb-16">Our Tech Stack</h2>
+
+        <div class="flex flex-col lg:flex-row gap-16 items-center lg:items-start">
+            <!-- Left side: Description on hover -->
+            <div class="tech-description-container w-full lg:w-1/2 flex flex-col justify-center items-center lg:items-start text-center lg:text-left min-h-[200px] lg:min-h-[300px] relative">
+                <div id="tech-glow" class="absolute inset-0 pointer-events-none opacity-0 blur-[70px] z-[-1]" style="background: radial-gradient(circle at 0% 50%, white, transparent 70%);"></div>
+                <h3 id="tech-title" class="text-5xl font-extrabold text-white mb-4"></h3>
+                <p id="tech-description" class="text-white/70 text-lg max-w-md"></p>
+            </div>
+
+            <!-- Right side: Icons Grid -->
+            <div class="tech-icons-grid w-full lg:w-1/2 grid grid-cols-4 sm:grid-cols-5 gap-3 sm:gap-4 justify-items-center">
+                <!-- Icons are generated with data attributes for the hover script -->
+                
+                <!-- Figma -->
+                <div class="relative tech-icon-item group" data-tech-name="Figma" data-tech-description="Our primary tool for interface design and collaborative prototyping." data-tech-color="#F24E1E">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-[#F24E1E] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:figma" class="text-2xl sm:text-3xl text-white"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HTML -->
+                <div class="relative tech-icon-item group" data-tech-name="HTML5" data-tech-description="The standard markup language for documents designed for web display." data-tech-color="#E34F26">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-14 h-14 bg-[#E34F26] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:html5" class="text-3xl text-white"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tailwind -->
+                <div class="relative tech-icon-item group" data-tech-name="Tailwind CSS" data-tech-description="A utility-first CSS framework for building modern websites fast." data-tech-color="#06B6D4">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-14 h-14 bg-[#06B6D4] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:tailwindcss" class="text-3xl text-white"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JavaScript -->
+                <div class="relative tech-icon-item group" data-tech-name="JavaScript" data-tech-description="The core language for building interactive logic and modern web applications." data-tech-color="#F7DF1E">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-14 h-14 bg-[#F7DF1E] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:javascript" class="text-3xl text-black"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- React -->
+                <div class="relative tech-icon-item group" data-tech-name="React" data-tech-description="Our standard for building reactive, scalable component-based UIs." data-tech-color="#61DAFB">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-14 h-14 bg-[#23272F] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:react" class="text-3xl text-[#61DAFB]"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next.js -->
+                <div class="relative tech-icon-item group" data-tech-name="Next.js" data-tech-description="The leading React framework for high-performance production applications." data-tech-color="#FFFFFF">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-14 h-14 bg-white flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:nextdotjs" class="text-3xl text-black"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Framer Motion -->
+                <div class="relative tech-icon-item group" data-tech-name="Framer Motion" data-tech-description="Modern animation library for React, delivering fluid layout and transitions." data-tech-color="#BB00FF">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-black flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:framer" class="text-2xl sm:text-3xl text-white"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GSAP -->
+                <div class="relative tech-icon-item group" data-tech-name="GSAP" data-tech-description="Industry-standard JavaScript toolset for building high-performance animations." data-tech-color="#88CE02">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-white flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:greensock" class="text-3xl sm:text-4xl text-[#88CE02]"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Three.js -->
+                <div class="relative tech-icon-item group" data-tech-name="Three.js" data-tech-description="Enabling immersive 3D WebGL experiences directly within the browser." data-tech-color="#FFFFFF">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-black flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:threedotjs" class="text-2xl sm:text-3xl text-white"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHP -->
+                <div class="relative tech-icon-item group" data-tech-name="PHP" data-tech-description="A widely-used, reliable server-side scripting language for web development." data-tech-color="#777BB4">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-[#777BB4] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:php" class="text-3xl sm:text-4xl text-white"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Laravel -->
+                <div class="relative tech-icon-item group" data-tech-name="Laravel" data-tech-description="The PHP framework for web artisans—elegant, secure, and highly scalable." data-tech-color="#FF2D20">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-white flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:laravel" class="text-2xl sm:text-3xl text-[#FF2D20]"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node.js -->
+                <div class="relative tech-icon-item group" data-tech-name="Node.js" data-tech-description="An event-driven JavaScript runtime for building scalable server-side applications." data-tech-color="#339933">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-[#339933] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:nodedotjs" class="text-3xl sm:text-4xl text-white"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Supabase -->
+                <div class="relative tech-icon-item group" data-tech-name="Supabase" data-tech-description="The open-source Firebase alternative with a full Postgres database." data-tech-color="#3ECF8E">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-14 h-14 bg-[#1C1C1C] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:supabase" class="text-3xl text-[#3ECF8E]"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Firebase -->
+                <div class="relative tech-icon-item group" data-tech-name="Firebase" data-tech-description="Google's platform for real-time databases, authentication, and hosting." data-tech-color="#FFCA28">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-[#FFCA28] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:firebase" class="text-2xl sm:text-3xl text-[#039BE5]"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lenis -->
+                <div class="relative tech-icon-item group" data-tech-name="Lenis Scroll" data-tech-description="Lightweight library providing high-performance inertial scrolling for web experiences." data-tech-color="#FFFFFF">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-white flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="ph:mouse-simple" class="text-2xl sm:text-3xl text-black"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio-wrap min-h-screen relative flex items-center" id="portfolio">
+        <div class="absolute top-[10%] left-6 md:left-[8%] z-20">
+            <h2 class="text-[3.5rem] font-bold fade-up">Featured Projects</h2>
+        </div>
+        <div class="portfolio-container flex w-max h-screen items-center px-[10vw]">
+            <div class="project-card">
+                <img src="assets/projects/loginsti.png" alt="School Management System Dashboard" class="project-image" loading="lazy">
+                <div class="project-info"><h4 class="project-title">School Management System</h4><p class="project-description">Academic & records platform.</p></div>
+            </div>
+            <div class="project-card">
+                <img src="assets/projects/operationaldashboard.png" alt="Exam Proctor Monitoring System Interface" class="project-image" loading="lazy">
+                <div class="project-info"><h4 class="project-title">Exam Proctor Monitoring</h4><p class="project-description">Assigning & monitoring examiners efficiently.</p></div>
+            </div>
+            <div class="project-card">
+                <video src="assets/projects/siargao.mp4" class="project-image" autoplay loop muted playsinline></video>
+                <div class="project-info"><h4 class="project-title">Landing Page</h4><p class="project-description">A visually appealing landing page focused on user experience and conversions.</p></div>
+            </div>
+            <div class="project-card">
+                <img src="assets/projects/hotelbooking.jpg" alt="Hotel Room Booking and Management System" class="project-image" loading="lazy">
+                <div class="project-info"><h4 class="project-title">Hotel Booking</h4><p class="project-description">Reservation & room management.</p></div>
+            </div>
+            <div class="project-card">
+                <img src="assets/projects/baguio.png" alt="Corporate Business Website Showcase" class="project-image" loading="lazy">
+                <div class="project-info"><h4 class="project-title">Business Website</h4><p class="project-description">High-engagement corporate site.</p></div>
+            </div>
+            <div class="project-card">
+                <img src="assets/projects/bahaykubo.png" alt="E-Commerce Store Front and Product Management" class="project-image" loading="lazy">
+                <div class="project-info"><h4 class="project-title">E-Commerce Platform</h4><p class="project-description">Complete selling solution.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 md:py-[100px] px-6 md:px-[8%] relative z-10" id="web-packages">
+        <div class="mb-16">
+            <h2 class="text-4xl md:text-[3.5rem] font-bold fade-up">Web Solutions</h2>
+            <p class="text-white/60 mt-4 fade-up">Tailored development packages for every stage of growth.</p>
+            <p class="text-white/40 text-sm mt-2 italic fade-up">* Note: Prices are estimates and may vary depending on specific project requirements.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Starter Website -->
+            <div class="card-effect reveal-card flex justify-center">
+                <div class="card-inner">
+                    <div class="card__liquid"></div>
+                    <div class="card__shine"></div>
+                    <div class="card__glow"></div>
+                    <div class="card__content">
+                        <div class="card__image" style="--bg-color: #1a1a1a; background: linear-gradient(45deg, #111, #222)">
+                            <iconify-icon icon="ph:browser-duotone" class="text-5xl text-white/20"></iconify-icon>
+                        </div>
+                        <div class="card__text">
+                            <p class="card__title">Starter</p>
+                            <p class="card__description">1–5 Pages, Mobile Responsive, Contact Form, Facebook Integration</p>
+                        </div>
+                        <div class="card__footer">
+                            <div class="card__price">₱3,500+</div>
+                            <div class="card__button project-modal-trigger">
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 12H19M12 5V19" stroke="currentColor" stroke-width="2"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Website -->
+            <div class="card-effect reveal-card flex justify-center">
+                <div class="card-inner">
+                    <div class="card__badge">TRENDING</div>
+                    <div class="card__liquid"></div>
+                    <div class="card__shine"></div>
+                    <div class="card__glow"></div>
+                    <div class="card__content">
+                        <div class="card__image" style="--bg-color: #333333; background: linear-gradient(45deg, #222, #333)">
+                            <iconify-icon icon="ph:buildings-duotone" class="text-5xl text-white/20"></iconify-icon>
+                        </div>
+                        <div class="card__text">
+                            <p class="card__title">Business</p>
+                            <p class="card__description">Home, About, Services, Gallery, Contact Page, Google Maps</p>
+                        </div>
+                        <div class="card__footer">
+                            <div class="card__price">₱15,000+</div>
+                            <div class="card__button project-modal-trigger">
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 12H19M12 5V19" stroke="currentColor" stroke-width="2"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Website -->
+            <div class="card-effect reveal-card flex justify-center">
+                <div class="card-inner">
+                    <div class="card__liquid"></div>
+                    <div class="card__shine"></div>
+                    <div class="card__glow"></div>
+                    <div class="card__content">
+                        <div class="card__image" style="--bg-color: #4d4d4d; background: linear-gradient(45deg, #333, #444)">
+                            <iconify-icon icon="ph:rocket-launch-duotone" class="text-5xl text-white/20"></iconify-icon>
+                        </div>
+                        <div class="card__text">
+                            <p class="card__title">Enterprise</p>
+                            <p class="card__description">Booking system, Online ordering, Admin dashboard, Database</p>
+                        </div>
+                        <div class="card__footer">
+                            <div class="card__price">₱30,000+</div>
+                            <div class="card__button project-modal-trigger">
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 12H19M12 5V19" stroke="currentColor" stroke-width="2"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rating and Feedback Section -->
+    <!-- Dito nakalagay ang mga feedback at rating mula sa ating mga naging kliyente -->
+    <section class="py-20 md:py-[100px] px-6 md:px-[8%] relative z-10" id="feedback">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+            <div>
+                <h2 class="text-4xl md:text-[3.5rem] font-bold fade-up">Feedback and Rating</h2>
+                <p class="text-white/60 mt-4 fade-up">Maraming salamat sa inyong tiwala at suporta sa Bay Developers.</p>
+            </div>
+            <button id="openFeedbackModal" class="px-8 py-4 rounded-full border border-white font-semibold transition-all hover:bg-white hover:text-black fade-up">Add Your Feedback</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Halimbawa ng isang feedback card mula sa kliyente -->
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="flex items-center mb-4 text-yellow-400">
+                    <span class="text-xl">★★★★★</span>
+                </div>
+                <p class="text-white mb-6 italic">"Napakaganda ng kinalabasan ng aming website. Napakabilis nilang kausap at talagang sinusunod ang aming gusto. Sulit ang bayad!"</p>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-white/10 rounded-full mr-4 flex items-center justify-center font-bold">MR</div>
+                    <div>
+                        <h4 class="font-bold">Marc Anthony Reyes</h4>
+                        <p class="text-white/40 text-sm">BSTM Student</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pangalawang feedback card -->
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="flex items-center mb-4 text-yellow-400">
+                    <span class="text-xl">★★★★★</span>
+                </div>
+                <p class="text-white mb-6 italic">"Yung inventory system na ginawa nila ay sobrang nakatulong sa aking tindahan. Wala na kaming hirap sa pag-track ng aming stocks araw-araw."</p>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-white/10 rounded-full mr-4 flex items-center justify-center font-bold">ES</div>
+                    <div>
+                        <h4 class="font-bold">Elena Santos</h4>
+                        <p class="text-white/40 text-sm">Grocer Store Owner</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pangatlong feedback card -->
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="flex items-center mb-4 text-yellow-400">
+                    <span class="text-xl">★★★★★</span>
+                </div>
+                <p class="text-white mb-6 italic">"Professional sila magtrabaho at talagang world-class ang design. Rekomendado ko ito sa mga naghahanap ng de-kalidad na system."</p>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-white/10 rounded-full mr-4 flex items-center justify-center font-bold">RL</div>
+                    <div>
+                        <h4 class="font-bold">Roberto Lim</h4>
+                        <p class="text-white/40 text-sm">Vice Principal, STI COLLEGE</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feedback Pop-up Modal -->
+    <div id="feedbackModal" class="fixed inset-0 z-[2000] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" id="closeModalOverlay"></div>
+        <div class="relative bg-[#0a0f0f] border border-white/10 p-8 md:p-12 rounded-[30px] w-full max-w-lg mx-4 z-10">
+            <h3 class="text-3xl font-bold mb-2">Share Your Experience</h3>
+            <p class="text-white/60 mb-8">We value your partnership with Bay Developers.</p>
+            <form id="feedbackForm" class="space-y-4">
+                <input type="text" id="fbName" name="name" placeholder="Your Name" required class="w-full p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                <input type="text" id="fbRole" name="role" placeholder="Your Role / Company" required class="w-full p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                <div class="flex gap-2 text-yellow-400 py-2 text-2xl" id="starRating">
+                    <span class="cursor-pointer hover:scale-120 transition-transform" data-val="1">★</span>
+                    <span class="cursor-pointer hover:scale-120 transition-transform" data-val="2">★</span>
+                    <span class="cursor-pointer hover:scale-120 transition-transform" data-val="3">★</span>
+                    <span class="cursor-pointer hover:scale-120 transition-transform" data-val="4">★</span>
+                    <span class="cursor-pointer hover:scale-120 transition-transform" data-val="5">★</span>
+                </div>
+                <textarea id="fbText" name="message" placeholder="How was your experience working with us?" required rows="4" class="w-full p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors"></textarea>
+                <button type="submit" class="w-full py-5 rounded-full font-bold bg-white text-black hover:scale-[1.02] transition-transform active:scale-95">Submit Review</button>
+            </form>
+            <button id="closeModalBtn" class="absolute top-6 right-6 text-white/40 hover:text-white transition-colors">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Project Pop-up Modal -->
+    <div id="projectModal" class="fixed inset-0 z-[2000] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" id="closeProjectModalOverlay"></div>
+        <div class="relative bg-[#0a0f0f] border border-white/10 p-8 md:p-12 rounded-[30px] w-full max-w-lg mx-4 z-10 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-3xl font-bold mb-2">Start Your Project</h3>
+            <p class="text-white/60 mb-8">Tell us about your vision and let's build something great together.</p>
+            <form id="projectForm" class="space-y-4">
+                <div class="relative">
+                    <iconify-icon icon="ph:user-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></iconify-icon>
+                    <input type="text" name="name" placeholder="Your Name" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                </div>
+                <div class="relative">
+                    <iconify-icon icon="ph:envelope-simple-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></iconify-icon>
+                    <input type="email" name="email" placeholder="Email Address" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                </div>
+                <div class="relative">
+                    <iconify-icon icon="ph:phone-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></iconify-icon>
+                    <input type="tel" name="phone" placeholder="Phone Number" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                </div>
+                <div class="relative">
+                    <iconify-icon icon="ph:briefcase-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"></iconify-icon>
+                    <select name="project_type" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors appearance-none">
+                        <option value="" disabled selected class="bg-[#050a0a]">Select Project Type</option>
+                        <option value="website" class="bg-[#050a0a]">Website Development</option>
+                        <option value="system" class="bg-[#050a0a]">Custom Web System</option>
+                        <option value="ecommerce" class="bg-[#050a0a]">E-Commerce</option>
+                        <option value="capstone" class="bg-[#050a0a]">Capstone / Academic</option>
+                        <option value="other" class="bg-[#050a0a]">Other</option>
+                    </select>
+                    <iconify-icon icon="ph:caret-down-bold" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"></iconify-icon>
+                </div>
+                <div class="relative">
+                    <iconify-icon icon="ph:chat-centered-text-bold" class="absolute left-4 top-5 text-white/40"></iconify-icon>
+                    <textarea name="details" placeholder="Tell us more about the project requirements..." required rows="4" class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors"></textarea>
+                </div>
+                <button type="submit" class="w-full py-5 rounded-full font-bold bg-white text-black hover:scale-[1.02] transition-transform active:scale-95">Send Project Inquiry</button>
+            </form>
+            <button id="closeProjectModalBtn" class="absolute top-6 right-6 text-white/40 hover:text-white transition-colors">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Custom Notification Toast -->
+    <div id="notificationToast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[3000] flex items-center gap-4 bg-white text-black px-6 py-4 rounded-2xl shadow-2xl transition-all duration-500 translate-y-20 opacity-0 pointer-events-none">
+        <div id="notificationIconWrap" class="flex items-center justify-center w-10 h-10 bg-green-500 rounded-full text-white shrink-0">
+            <iconify-icon id="notificationIcon" icon="ph:check-bold" class="text-xl"></iconify-icon>
+        </div>
+        <div>
+            <p id="notificationMessage" class="font-bold text-sm"></p>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <section class="py-20 md:py-[100px] px-6 md:px-[8%] relative z-10" id="faq">
+        <div class="mb-16">
+            <h2 class="text-4xl md:text-[3.5rem] font-bold fade-up">Frequently Asked Questions</h2>
+            <p class="text-white/60 mt-4 fade-up">Find answers to common questions about our services.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-16 md:gap-y-32 gap-x-12 max-w-4xl mx-auto justify-items-center">
+            <!-- FAQ Card 1 -->
+            <div class="faq-card reveal-card md:justify-self-end">
+                <div class="align">
+                    <span class="red-dot"></span>
+                    <span class="yellow-dot"></span>
+                    <span class="green-dot"></span>
+                </div>
+                <h1>How long does a website take?</h1>
+                <p>5–14 days depending on complexity.</p>
+            </div>
+
+            <!-- FAQ Card 2 -->
+            <div class="faq-card right-facing reveal-card md:justify-self-start md:mt-[-40px]">
+                <div class="align">
+                    <span class="red-dot"></span>
+                    <span class="yellow-dot"></span>
+                    <span class="green-dot"></span>
+                </div>
+                <h1>Do you offer maintenance?</h1>
+                <p>Yes, we provide ongoing maintenance and support.</p>
+            </div>
+
+            <!-- FAQ Card 3 -->
+            <div class="faq-card reveal-card md:justify-self-end">
+                <div class="align">
+                    <span class="red-dot"></span>
+                    <span class="yellow-dot"></span>
+                    <span class="green-dot"></span>
+                </div>
+                <h1>Do you provide domain and hosting?</h1>
+                <p>Yes, we can assist with domain registration and hosting setup.</p>
+            </div>
+
+            <!-- FAQ Card 4 -->
+            <div class="faq-card right-facing reveal-card md:justify-self-start md:mt-[-40px]">
+                <div class="align">
+                    <span class="red-dot"></span>
+                    <span class="yellow-dot"></span>
+                    <span class="green-dot"></span>
+                </div>
+                <h1>Can you create capstone systems?</h1>
+                <p>Yes, we specialize in developing custom capstone systems.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats min-h-screen px-6 md:px-[8%] py-20 md:py-[100px] flex items-center">
+        <div class="stats-grid grid grid-cols-2 lg:grid-cols-4 w-full text-center gap-12">
+            <div class="stat-item"><h2 class="counter text-5xl md:text-[4rem] font-bold text-white">50</h2><p class="text-sm md:text-base text-white/60">Projects Completed</p></div>
+            <div class="stat-item"><h2 class="counter text-5xl md:text-[4rem] font-bold text-white">30</h2><p class="text-sm md:text-base text-white/60">Satisfied Clients</p></div>
+            <div class="stat-item"><h2 class="text-5xl md:text-[4rem] font-bold text-white">100%</h2><p class="text-sm md:text-base text-white/60">Quality Commitment</p></div>
+            <div class="stat-item"><h2 class="text-5xl md:text-[4rem] font-bold text-white">24/7</h2><p class="text-sm md:text-base text-white/60">Support</p></div>
+        </div>
+    </section>
+
+    <section class="contact min-h-screen px-6 md:px-[8%] py-20 md:py-[100px] flex items-center" id="contact">
+        <div class="contact-container grid grid-cols-1 lg:grid-cols-2 gap-16 w-full">
+            <div>
+                <h2 class="text-4xl md:text-[3.5rem] mb-12 font-bold">Get In Touch</h2>
+                <div class="text-white/60 mb-8 space-y-3">
+                    <p class="flex items-center gap-3"><iconify-icon icon="ph:map-pin-fill" class="text-xl text-white"></iconify-icon> Palawan, Philippines</p>
+                    <p class="flex items-center gap-3"><iconify-icon icon="ph:phone-fill" class="text-xl text-white"></iconify-icon> +9929740280</p>
+                    <p class="flex items-center gap-3"><iconify-icon icon="ph:envelope-simple-fill" class="text-xl text-white"></iconify-icon> <a href="mailto:baydevelopers@gmail.com" class="hover:text-white transition-colors">baydevelopers@gmail.com</a></p>
+                    <p class="flex items-center gap-3"><iconify-icon icon="ph:facebook-logo-fill" class="text-xl text-white"></iconify-icon> Bay Developers Palawan</p>
+                </div>
+
+                <p class="text-white/60 text-sm italic mb-2 text-center md:text-left">For a faster response, message us on our socials:</p>
+                
+                <!-- 3D Social Buttons -->
+                <div class="social-container mb-12">
+                    <div class="social-child child-discord">
+                        <a href="https://discord.gg/VR3j367a" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="Join our Discord">
+                            <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M524.531,69.836a1.5,1.5,0,0,0-.764-.7A485.065,485.065,0,0,0,404.081,32.03a1.816,1.816,0,0,0-1.923.91,337.461,337.461,0,0,0-14.9,30.6,447.848,447.848,0,0,0-134.426,0,309.541,309.541,0,0,0-15.135-30.6,1.89,1.89,0,0,0-1.924-.91A483.689,483.689,0,0,0,116.085,69.137a1.712,1.712,0,0,0-.788.676C39.068,183.651,18.186,294.69,28.43,404.354a2.016,2.016,0,0,0,.765,1.375A487.666,487.666,0,0,0,176.02,479.918a1.9,1.9,0,0,0,2.063-.676A348.2,348.2,0,0,0,208.12,430.4a1.819,1.819,0,0,0-1.017-2.526,328.1,328.1,0,0,1-45.939-21.922,1.874,1.874,0,0,1-.184-3.127c3.135-2.343,6.27-4.784,9.257-7.248a1.791,1.791,0,0,1,1.875-.246C261.385,441.9,378.615,441.9,467.872,395.336a1.791,1.791,0,0,1,1.875.246c2.987,2.464,6.122,4.9,9.257,7.248a1.874,1.874,0,0,1-.184,3.127,330.21,330.21,0,0,1-45.939,21.922,1.819,1.819,0,0,0-1.017,2.526,350.7,350.7,0,0,0,30.037,48.842,1.908,1.908,0,0,0,2.063.676A486.555,486.555,0,0,0,610.7,405.729a1.882,1.882,0,0,0,.765-1.352C623.729,277.594,590.933,167.465,524.531,69.836ZM222.491,337.58c-28.972,0-52.844-26.587-52.844-59.239S193.056,219.1,222.491,219.1c29.665,0,53.306,26.82,52.843,59.239C275.334,310.993,251.924,337.58,222.491,337.58Zm195.38,0c-28.971,0-52.843-26.587-52.843-59.239S388.437,219.1,417.871,219.1c29.667,0,53.307,26.82,52.844,59.239C470.715,310.993,447.538,337.58,417.871,337.58Z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="social-child child-instagram">
+                        <a href="https://www.instagram.com/baydevpalawan/" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="Follow us on Instagram">
+                            <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="social-child child-whatsapp">
+                        <a href="https://wa.me/9929740280" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="Message us on WhatsApp">
+                            <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.1 0-65.6-8.9-94-25.7l-6.7-4-69.8 18.3 18.7-68.1-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.6-2.8-23.6-8.7-45-27.7-16.6-14.9-27.7-33.2-31-38.8-3.2-5.6-.3-8.6 2.5-11.4 2.5-2.5 5.5-6.5 8.3-9.7 2.8-3.2 3.7-5.5 5.6-9.2 1.9-3.7.9-7-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.5 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.5 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="social-child child-github">
+                        <a href="https://github.com/baydevolpersppc" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="View our GitHub">
+                            <svg viewBox="0 0 496 512" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="social-child child-facebook">
+                        <a href="https://web.facebook.com/profile.php?id=61590869843682" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="Visit our Facebook">
+                            <svg viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="fade-up w-full p-8 md:p-12 bg-white/5 border border-white/10 rounded-[30px]">
+                <h3 class="text-3xl font-bold mb-8">Start your project now</h3>
+                    <form id="contactForm" class="relative z-10 space-y-5">
+                        <div class="relative">
+                            <iconify-icon icon="ph:user-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></iconify-icon>
+                            <input type="text" name="name" placeholder="Your Name" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                        </div>
+                        <div class="relative">
+                            <iconify-icon icon="ph:envelope-simple-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></iconify-icon>
+                            <input type="email" name="email" placeholder="Email Address" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                        </div>
+                        <div class="relative">
+                            <iconify-icon icon="ph:phone-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></iconify-icon>
+                            <input type="tel" name="phone" placeholder="Phone Number" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                        </div>
+                        <div class="relative">
+                            <iconify-icon icon="ph:briefcase-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"></iconify-icon>
+                            <select name="project_type" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors appearance-none">
+                                <option value="" disabled selected class="bg-[#050a0a]">Select Project Type</option>
+                                <option value="website" class="bg-[#050a0a]">Website Development</option>
+                                <option value="system" class="bg-[#050a0a]">Custom Web System</option>
+                                <option value="ecommerce" class="bg-[#050a0a]">E-Commerce</option>
+                                <option value="capstone" class="bg-[#050a0a]">Capstone / Academic</option>
+                                <option value="other" class="bg-[#050a0a]">Other</option>
+                            </select>
+                            <iconify-icon icon="ph:caret-down-bold" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"></iconify-icon>
+                        </div>
+                        <div class="relative">
+                            <iconify-icon icon="ph:chat-centered-text-bold" class="absolute left-4 top-5 text-white/40"></iconify-icon>
+                            <textarea name="details" placeholder="Tell us more about the project requirements..." required rows="5" class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-5 rounded-full font-bold bg-white text-black hover:scale-[1.02] transition-transform active:scale-95">Send Project Inquiry</button>
+                    </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 px-6 md:px-[8%] border-t border-white/10 text-center">
+        <p class="text-white/60">Bay Developers — Crafting Modern Digital Solutions for Tomorrow. 🚀</p>
+    </footer>
+
+    <!-- Floating CTA -->
+    <a href="#contact" id="floatingCTA" class="fixed bottom-8 right-8 z-[2001] bg-white text-black px-6 py-3 rounded-full font-bold shadow-2xl transition-all duration-500 translate-y-20 opacity-0 pointer-events-none flex items-center gap-2 group hover:bg-white/90">
+        <iconify-icon icon="ph:paper-plane-tilt-bold" class="text-xl group-hover:rotate-12 transition-transform"></iconify-icon>
+        <span>Contact Us</span>
+    </a>
+    <script src="script.js"></script>
+</body>
+</html>
