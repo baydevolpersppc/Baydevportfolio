@@ -3,1958 +3,1208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZERO Kyu-Wing Management System</title>
+    <title>BayDev Palawan | Engineering Excellence</title>
+    <!-- Dependencies -->
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
     <style>
-        /* =============================================================
-           MODERN UI COLOR PALETTE & VARIABLES
-           ============================================================= */
-        :root {
-            --bg-dark: #020617;
-            --bg-card: #0f172a;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-blue: #3b82f6;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --border-color: #1e293b;
-            --shadow-glow: 0 0 15px rgba(59, 130, 246, 0.3);
-        }
-
-        body.light-mode {
-            --bg-dark: #f1f5f9;
-            --bg-card: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #cbd5e1;
-        }
-
-        /* =============================================================
-           LIGHT MODE TAILWIND OVERRIDES
-           ============================================================= */
-        body.light-mode header { 
-            background: rgba(241, 245, 249, 0.8); 
-            border-bottom-color: var(--border-color); 
-        }
+        html, body { overflow-x: hidden; width: 100%; position: relative; }
+        body { font-family: 'Inter', sans-serif; background-color: #050a0a; color: white; }
         
-        /* Specific handling for panel cards to ensure they aren't grey in light mode */
-        body.light-mode .panel-card {
-            background-color: var(--bg-card) !important;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        /* Custom background grid with mask for that Verteal vibe */
+        .bg-grid-verteal {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0);
+            background-size: 40px 40px;
         }
 
-        body.light-mode .\!bg-slate-900\/50,
-        body.light-mode .\!bg-slate-900\/30,
-        body.light-mode .\!bg-slate-900\/20,
-        body.light-mode .bg-slate-900\/50, 
-        body.light-mode .bg-slate-900\/40, 
-        body.light-mode .bg-slate-900\/30,
-        body.light-mode .bg-slate-900,
-        body.light-mode .bg-slate-800,
-        body.light-mode .bg-black\/20,
-        body.light-mode .bg-black\/30,
-        body.light-mode .bg-black\/40 { 
-            background-color: var(--bg-card) !important; 
-            border-color: var(--border-color) !important; 
-        }
-        body.light-mode .text-white, 
-        body.light-mode .text-slate-200,
-        body.light-mode .desk-title,
-        body.light-mode .counter-display { 
-            color: var(--text-main) !important; 
-        }
-        body.light-mode .text-slate-400, 
-        body.light-mode .text-slate-500 { color: var(--text-muted) !important; }
-        body.light-mode .bg-slate-950, 
-        body.light-mode .bg-slate-950\/50 { 
-            background-color: var(--bg-dark) !important; 
-            border-color: var(--border-color) !important; 
-            color: var(--text-main) !important; 
-        }
-        body.light-mode .border-slate-800,
-        body.light-mode .border-white\/5,
-        body.light-mode .border-white\/10 { border-color: var(--border-color) !important; }
+        /* Service card bullet styling */
+        .service-card ul li::before { content: "→"; color: #ffffff; margin-right: 10px; }
 
-        * { box-sizing: border-box; }
+        /* Animation specific masks */
+        .reveal-word { display: inline-block; clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
 
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            line-height: 1.5;
-            height: 100vh;
-            overflow: hidden;
+        /* 3D Social Buttons Styling */
+        .social-container { display: flex; justify-content: center; align-items: center; margin-top: 2rem; flex-wrap: wrap; gap: 12px; }
+        .social-child {
+            width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;
+            transform-style: preserve-3d; transition: all 0.3s cubic-bezier(0.68, 0.85, 0.265, 1.85);
+            border-radius: 5px; background: rgba(255,255,255,0.05);
+            box-shadow: inset 1px 1px 2px rgba(255,255,255,0.2), 0 0 5px rgba(0,0,0,0.2);
+            will-change: transform;
         }
+        @media (min-width: 768px) {
+            .social-container { justify-content: flex-start; gap: 15px; }
+            .social-child { width: 60px; height: 60px; }
+        }
+        .social-child:hover {
+            background-color: white;
+            transform: perspective(180px) rotateX(60deg) translateY(2px);
+        }
+        .child-discord:hover { box-shadow: 0px 10px 20px #5865F2; }
+        .child-instagram:hover { box-shadow: 0px 10px 20px #ff00ff; }
+        .child-github:hover { box-shadow: 0px 10px 20px #ffffff; background-color: #000; }
+        .child-whatsapp:hover { box-shadow: 0px 10px 20px #25D366; }
+        .child-facebook:hover { box-shadow: 0px 10px 20px #4267b2; }
 
-        /* HEADER & TOP BAR */
-        /* Keep some specific brand styling, move rest to Tailwind */
-        header {
-            background: rgba(2, 6, 23, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 50;
+        .social-button {
+            cursor: pointer; width: 100%; height: 100%; border: none;
+            background-color: transparent; display: flex; justify-content: center; align-items: center;
+            transition-duration: 0.5s; transition-timing-function: cubic-bezier(0.68, -0.85, 0.265, 1.55);
         }
+        .social-child:hover > .social-button {
+            transform: translate3d(0px, 20px, 30px) perspective(80px) rotateX(-60deg) translateY(2px) translateZ(10px);
+        }
+        .social-button svg { width: 28px; height: 28px; fill: white; transition: fill 0.3s; }
+        .social-child:hover svg { fill: #050a0a; } /* Invert icon color on hover */
         
-        .header-left {
-            display: flex; align-items: center; gap: 20px;
-        }
+        /* Override specific hover colors to match brand colors */
+        .child-discord:hover svg { fill: #5865F2; }
+        .child-instagram:hover svg { fill: #ff00ff; }
+        .child-github:hover svg { fill: #ffffff; }
+        .child-whatsapp:hover svg { fill: #25D366; }
+        .child-facebook:hover svg { fill: #4267b2; }
 
-        .main-logo {
-            height: 100px; 
-            object-fit: contain;
-        }
-
-        .brand-title {
-            font-size: clamp(1.5rem, 3vw, 1.8rem); font-weight: 800; margin: 0;
-            background: linear-gradient(to right, #3b82f6, #8b5cf6);
-            background-clip: text;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        
-        .header-note { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2px; }
-
-        summary.admin-summary {
-            padding: 12px 20px; font-weight: 600; cursor: pointer; color: var(--text-muted);
-            display: flex; align-items: center; gap: 10px; user-select: none;
-        }
-        summary.admin-summary:hover { background: #1e293b; color: var(--text-main); }
-        .admin-content { padding: 15px 20px; border-top: 1px solid var(--border-color); display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end; }
-        
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-group input {
-            background: var(--bg-dark); border: 1px solid var(--border-color); color: white;
-            padding: 8px 12px; border-radius: 8px; font-size: 0.95rem; width: 100%; max-width: 280px; outline: none;
-        }
-        .form-group input:focus { border-color: var(--accent-blue); box-shadow: var(--shadow-glow); }
-        .form-group input[type="color"] { padding: 0; width: 65px; height: 38px; cursor: pointer; border-radius: 8px; }
-
-        /* FLUID GRID LAYOUT */
-        .operator-grid { 
-            display: grid;
-            /* Cards scale to fit window evenly, never shrinking below 280px */
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-            grid-auto-rows: minmax(300px, 1fr);
-            gap: 20px; 
-            margin-bottom: 15px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: var(--bg-dark); }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
-
-        /* CONTAINER QUERIES FOR FLUID CARDS */
-        .panel-card {
-            container-type: inline-size; /* Allows inner elements to scale based on card width */
-            background: var(--bg-card); border-radius: 20px; 
-            padding: clamp(15px, 4cqw, 25px); /* Padding scales dynamically */
-            border: 1px solid var(--border-color);
-            text-align: center;
+        /* Portfolio Card Styles */
+        .project-card {
             position: relative;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s, border-color 0.3s;
-            display: flex; flex-direction: column; justify-content: space-between;
-            height: 100%; /* Forces cards to stretch evenly in the grid */
+            width: 280px;
+            height: 200px;
+            margin-right: 30px;
+            background: #000;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+            cursor: pointer;
+            will-change: transform;
         }
-        .panel-card:hover { transform: translateY(-4px); border-color: #334155; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); }
-        .panel-card.drag-over { border: 2px dashed var(--accent-blue); opacity: 0.8; }
-
-        .drag-handle {
-            font-size: 0.7rem; color: #475569; letter-spacing: 2px; text-transform: uppercase;
-            cursor: grab; margin-top: -5px; margin-bottom: 10px; user-select: none;
-        }
-        .drag-handle:active { cursor: grabbing; }
-
-        .btn-delete {
-            position: absolute; top: clamp(10px, 3cqw, 15px); right: clamp(10px, 3cqw, 15px); 
-            background: rgba(239, 68, 68, 0.1); border: none;
-            color: var(--accent-red); cursor: pointer; width: 32px; height: 32px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s, background 0.2s;
-        }
-        .panel-card:hover .btn-delete { opacity: 1; }
-        .btn-delete:hover { background: var(--accent-red); color: white; }
-
-        .dept-badge {
-            display: inline-block; padding: 4px 12px; border-radius: 50px; font-size: 0.75rem;
-            font-weight: 800; text-transform: uppercase; letter-spacing: 1px; background: rgba(255,255,255,0.05); margin: 0 auto 5px auto; width: max-content;
+        
+        @media (min-width: 768px) {
+            .project-card {
+                width: 500px;
+                height: 350px;
+                margin-right: 80px;
+            }
         }
 
-        /* FLUID TYPOGRAPHY RULES */
-        .desk-title { 
-            font-size: clamp(1.2rem, 5cqw, 1.8rem); 
-            font-weight: 600; margin: 0 0 5px 0; color: white; 
-        }
-
-        .counter-display {
-            font-size: clamp(3.5rem, 15cqw, 6.5rem); /* Number dynamically swells to fill space */
-            font-weight: 900; margin: auto 0;
-            font-variant-numeric: tabular-nums; color: var(--text-main); letter-spacing: -2px;
-            line-height: 1;
-        }
-
-        /* OPERATOR DASHBOARD SPECIFIC */
-        .operator-focus {
+        .project-image {
+            display: block;
             width: 100%;
             height: 100%;
-            animation: fadeInUp 0.5s ease-out;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            object-fit: cover;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            will-change: transform, scale;
         }
 
-        /* ACTIONS & METRICS */
-        .btn-action { 
-            color: white; border: none; 
-            padding: clamp(10px, 3cqw, 14px) 10px; 
-            font-size: clamp(0.85rem, 3cqw, 1rem); 
-            font-weight: 700; border-radius: 12px; cursor: pointer; 
-            transition: all 0.2s ease;
-        }
-        
-        .btn-prev { background: #475569; } .btn-prev:hover { background: #64748b; }
-        .btn-next { background: var(--accent-green); box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2); } .btn-next:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3); }
-        .btn-recall { background: #6366f1; } .btn-recall:hover { background: #4f46e5; }
-        .btn-reset-desk { background: rgba(239, 68, 68, 0.2); color: #f8fafc; border: 1px solid rgba(239, 68, 68, 0.4); }
-        .btn-reset-desk:hover { background: var(--accent-red); color: white; }
-
-        .metrics-box {
-            background: var(--bg-dark); border-radius: 8px; padding: clamp(10px, 3cqw, 15px);
-            display: flex; justify-content: center; font-size: clamp(0.75rem, 2.5cqw, 0.9rem); color: var(--text-muted);
-        }
-        .limit-row { width: 100%; display: flex; justify-content: space-between; align-items: center; }
-        .limit-input { width: 70px; background: var(--bg-card); border: 1px solid var(--border-color); color: white; padding: 6px; border-radius: 6px; text-align: center; font-weight: bold; outline: none; }
-        .limit-input:focus { border-color: var(--accent-blue); }
-
-        .system-footer { margin-top: auto; text-align: center; border-top: 1px solid var(--border-color); padding-top: 15px; flex-shrink: 0; }
-        .btn-reset { background: rgba(239, 68, 68, 0.1); color: var(--accent-red); border: 1px solid rgba(239,68,68,0.3); padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
-        .btn-reset:hover { background: var(--accent-red); color: white; }
-
-        /* LOBBY DISPLAY TV STYLES - UNCHANGED */
-        .tv-body {
-            background-color: #f1f5f9; 
-            background-image: radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%);
-            color: #0f172a; font-family: system-ui, sans-serif;
-            margin: 0; padding: 3vh 3vw; box-sizing: border-box; height: 100vh; width: 100vw;
-            overflow: hidden; display: flex; flex-direction: column; position: relative;
+        .project-card:hover {
+            transform: rotate(-3deg) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
-        .fs-btn { 
-            position: fixed; bottom: 5vh; right: 3vw; 
-            background: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: white; 
-            width: 8vh; height: 8vh; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; 
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            animation: tv-float 3s ease-in-out infinite;
-        }
-        .fs-btn:hover { transform: scale(1.15); background: #1e293b; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); }
-        .fs-btn svg { width: 4vh; height: 4vh; }
-        
-        @keyframes tv-float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-1.5vh); }
-        }
-        
-        .tv-footer-slideshow {
-            margin-top: auto;
-            padding: 1.2vh 0;
-            border-top: 2px solid #e2e8f0;
-            text-align: center;
-            font-weight: 800;
-            color: #64748b;
-            font-size: 2.2vh;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            display: flex; /* Added for centering content */
-            align-items: center; /* Added for centering content */
-            justify-content: center; /* Added for centering content */
-        }
-
-        :fullscreen .fs-btn { display: none !important; }
-        :-webkit-full-screen .fs-btn { display: none !important; }
-        :-moz-full-screen .fs-btn { display: none !important; }
-        
-        .tv-top, .tv-rows-wrapper { position: relative; z-index: 1; flex-shrink: 0; }
-
-        .tv-top { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5vh; margin-bottom: 1vh; margin-top: 0.2vh; }
-        .tv-title { font-size: 7vh; color: #0f172a; font-weight: 900; margin: 0; letter-spacing: 2px; }
-        .tv-clock { font-size: 3.5vh; color: #3b82f6; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
-        
-        .tv-rows-wrapper { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            grid-auto-rows: minmax(0, 1fr);
-            flex: 1; 
-            gap: 1.2vh 1.2vw; 
-            padding: 0.4vh 1.2vw; 
-            align-content: start;
-            overflow: hidden; 
-        }
-        
-        .tv-row { 
-            display: flex; flex-direction: column; justify-content: space-between; align-items: center; 
-            background: #ffffff;
-            padding: 0.8vh 1vw; border-radius: 20px; border: 2px solid #e2e8f0; border-top: 2vh solid; 
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+        .project-info {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            width: 100%;
             height: 100%;
-            width: 100%; box-sizing: border-box;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .tv-dept { font-size: 3.5vh; font-weight: bold; color: #1e293b; }
-        .tv-ticket { font-size: 8vh; font-weight: 900; font-variant-numeric: tabular-nums; text-shadow: 0 2px 10px rgba(0,0,0,0.04); }
-        
-        /* SOCIAL FOOTER STYLES */
-        .social-container { display: flex; gap: 12px; justify-content: center; align-items: center; }
-        .social-button {
-            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-            border-radius: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); color: #64748b;
-        }
-        .social-button svg { width: 18px; height: 18px; fill: currentColor; }
-        .social-button:hover { transform: translateY(-3px); color: white; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4); }
-        
-        .child-discord .social-button:hover { background: #5865F2; border-color: #5865F2; }
-        .child-instagram .social-button:hover { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); border-color: transparent; }
-        .child-whatsapp .social-button:hover { background: #25D366; border-color: #25D366; }
-        .child-github .social-button:hover { background: #333; border-color: #444; }
-        .child-facebook .social-button:hover { background: #1877F2; border-color: #1877F2; }
-
-        @keyframes pulseAlert {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); box-shadow: 0 0 40px 10px var(--glow-color, rgba(59, 130, 246, 0.6)); }
-        }
-        @keyframes pulse-alert {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-        @keyframes pop-in {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes float-y {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-2vh); }
-        }
-        .animate-pulse-alert { animation: pulse-alert 1.5s infinite alternate; }
-        .animate-pop-in { animation: pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .animate-float-y { animation: float-y 3s ease-in-out infinite; }
-        .tv-pulse-active { 
-            animation: pulseAlert 1s ease-in-out 5;
-        }
-
-        /* LED MARQUEE ANIMATION */
-        @keyframes marquee-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* INITIAL SYSTEM LOADER */
-        .loader {
-          width: 50px;
-          aspect-ratio: 1.154;
-          position: relative;
-          background: conic-gradient(from 120deg at 50% 64%,#0000, #3b82f6 1deg 120deg,#0000 121deg);
-          animation: l27-0 1.5s infinite cubic-bezier(0.3,1,0,1);
-        }
-        .loader:before,
-        .loader:after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: inherit;
-          transform-origin: 50% 66%;
-          animation: l27-1 1.5s infinite;
-        }
-        .loader:after {
-          --s: -1;
-        }
-        @keyframes l27-0 {
-          0%,30% { transform: rotate(0) }
-          70% { transform: rotate(120deg) }
-          70.01%,100% { transform: rotate(360deg) }
-        }
-        @keyframes l27-1 {
-          0% { transform: rotate(calc(var(--s,1)*120deg)) translate(0) }
-          30%,70% { transform: rotate(calc(var(--s,1)*120deg)) translate(calc(var(--s,1)*-5px),10px) }
-          100% { transform: rotate(calc(var(--s,1)*120deg)) translate(0) }
-        }
-        #loading-screen.hidden-loader {
+            padding: 40px;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
             opacity: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
             pointer-events: none;
         }
+
+        .project-card:hover .project-info {
+            transform: translate(-50%, -50%) rotate(0deg);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .project-card:hover .project-image {
+            transform: rotate(-45deg) scale(0);
+        }
+
+        .project-title { margin: 0; font-size: 24px; color: #050a0a; font-weight: 800; }
+        .project-description { margin: 12px 0 0; font-size: 14px; color: #555; line-height: 1.5; }
+
+        /* Hover effect for cards without transition-all conflict */
+        .reveal-card { 
+            transition: border-color 0.3s, background-color 0.3s, transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), backdrop-filter 0.3s;
+        }
+        /* Only apply generic blur hover to simple cards, avoiding conflict with 3D cards */
+        .reveal-card:not(.card-effect):hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(12px);
+        }
+        /* Service Icon Hover Animation */
+        .service-icon {
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .service-card:hover .service-icon {
+            transform: scale(1.2) translateY(-5px);
+            color: white;
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.3));
+        }
+        .service-card:hover { transform: translateY(-10px) !important; }
+
+        /* Hero Slideshow Styles */
+        .hero-slideshow::before {
+            content: '';
+            position: absolute;
+            inset: -1px; /* Overlap slightly to prevent sub-pixel seams */
+            background: linear-gradient(to right, #050a0a 0%, rgba(5, 10, 10, 0) 100%);
+            z-index: 10;
+        }
+        @media (max-width: 767px) {
+            .hero-slideshow::before {
+                background: linear-gradient(to bottom, #050a0a 0%, rgba(5, 10, 10, 0.4) 50%, #050a0a 100%);
+            }
+        }
+
+        /* Web Solutions Card Animations */
+        .card-effect { perspective: 1000px; }
+        .card-inner {
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-text: white;
+            --card-accent: white;
+            width: 100%;
+            min-height: 420px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d;
+        }
+        .card-inner:hover {
+            transform: rotateY(10deg) rotateX(10deg) translateZ(10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+        }
+
+        /* Tech Stack Icons */
+        .tech-icon-inner {
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            perspective: 1000px;
+            transform-style: preserve-3d; /* Needed for 3D transforms */
+        }
+
+        .tech-icon-item:hover .tech-icon-inner {
+            transform: rotateY(10deg) rotateX(10deg) translateZ(20px);
+        }
+
+        .card__liquid {
+            position: absolute; top: -80px; left: 0; width: 100%; height: 200px;
+            background: rgba(255, 255, 255, 0.15); border-radius: 50%;
+            transform: translateZ(-80px); filter: blur(80px);
+            transition: transform 0.7s cubic-bezier(0.36, 0, 0.66, -0.56), opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+
+        .card-inner:hover .card__liquid {
+            transform: translateZ(-50px) translateY(30px) translateX(-20px) rotate(-20deg) scale(1.2);
+            opacity: 0.7;
+        }
+
+        .card__shine {
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 70%);
+            opacity: 0; transition: opacity 0.4s ease-in-out;
+        }
+
+        .card-inner:hover .card__shine { opacity: 1; animation: shine-effect 2s infinite linear; }
+
+        .card__glow {
+            position: absolute; inset: -15px;
+            background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            opacity: 0; transition: opacity 0.6s ease-in-out;
+        }
+
+        .card-inner:hover .card__glow { opacity: 1; }
+
+        .card__content {
+            padding: 2rem; height: 100%; display: flex; flex-direction: column;
+            gap: 1rem; position: relative; z-index: 2;
+        }
+
+        .card__badge {
+            position: absolute; top: 20px; right: 20px; background: white;
+            color: #050a0a; padding: 4px 12px; border-radius: 999px;
+            font-size: 0.75rem; font-weight: 800; transform: scale(0.7);
+            opacity: 0; transition: all 0.5s ease 0.2s;
+        }
+
+        .card-inner:hover .card__badge { transform: scale(1); opacity: 1; z-index: 10; }
+
+        .card__image {
+            width: 100%; height: 140px; background: var(--bg-color); border-radius: 15px;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative; overflow: hidden; box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .card-inner:hover .card__image { transform: translateY(-8px) scale(1.05); }
+
+        .card__image::after {
+            content: ""; position: absolute; inset: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 40%),
+                        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 3px, transparent 3px, transparent 6px);
+            opacity: 0.6;
+        }
+
+        .card__title {
+            color: var(--card-text); font-size: 1.5rem; margin: 0;
+            font-weight: 800; transition: all 0.4s ease-in-out;
+        }
+
+        .card__description {
+            color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; margin: 0;
+            line-height: 1.5; transition: all 0.4s ease-in-out;
+        }
+
+        .card-inner:hover .card__title, .card-inner:hover .card__description { transform: translateX(5px); }
+        .card-inner:hover .card__description { color: white; }
+
+        .card__footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+
+        .card__price {
+            color: var(--card-text); font-weight: 700; font-size: 1.1rem;
+            transition: all 0.4s ease-in-out;
+        }
+
+        .card-inner:hover .card__price { transform: translateX(3px); opacity: 1; }
+
+        .card__button {
+            width: 40px; height: 40px; background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #050a0a; transition: all 0.4s; transform: scale(0.85);
+        }
+
+        .card-inner:hover .card__button {
+            transform: scale(1); box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+
+        .card-inner:hover .card__button svg { animation: pulse-button 1.5s infinite; }
+
+        @keyframes shine-effect {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        @keyframes pulse-button {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* Floating CTA Visibility */
+        #floatingCTA.visible {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Fix for horizontal scroll on mobile */
+        .portfolio-wrap {
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+            touch-action: pan-y;
+        }
+
+        /* Header Scrolled State */
+        #main-header.scrolled {
+            background: rgba(5, 10, 10, 0.9); /* Darker background when scrolled */
+            backdrop-filter: blur(15px);
+            padding-top: 0.5rem;   /* Shrink header height on scroll */
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* FAQ Card Styles */
+        .faq-card {
+            width: 100%;
+            max-width: 300px;
+            height: 140px; 
+            padding: 0.5rem;
+            background: rgba(198, 198, 198, 0.34); /* Semi-transparent white background */
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.440);
+            border-left: 2px solid rgba(255, 255, 255, 0.545);
+            box-shadow: -40px 50px 30px rgba(0, 0, 0, 0.280);
+            transition: all .4s ease-in-out;
+            overflow: hidden;
+            color: white;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            will-change: transform, height;
+        }
+
+        @media (min-width: 768px) {
+            .faq-card { transform: skewX(10deg); }
+            .faq-card.right-facing { transform: skewX(-10deg); }
+        }
+
+        .faq-card:hover {
+            height: 260px; /* Uniform expanded height for all cards */
+            transform: skewX(0deg); /* Removes skew on hover */
+            backdrop-filter: blur(15px);
+        }
+
+        .faq-card .align {
+            padding: 1rem;
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+            align-self: flex-start;
+            width: 100%;
+        }
+
+        .faq-card .red-dot,
+        .faq-card .yellow-dot,
+        .faq-card .green-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.280);
+        }
+
+        .faq-card .red-dot { background-color: #ff605c; }
+        .faq-card .yellow-dot { background-color: #ffbd44; }
+        .faq-card .green-dot { background-color: #00ca4e; }
+
+        .faq-card h1 {
+            text-align: center;
+            margin: 1.3rem;
+            color: rgb(218, 244, 237);
+            text-shadow: -10px 5px 10px rgba(0, 0, 0, 0.573);
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .faq-card p {
+            padding: 0 1.2rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            text-align: center;
+            opacity: 0; /* Hidden initially */
+            transition: opacity .3s ease-in-out;
+        }
+
+        .faq-card:hover p {
+            opacity: 1; /* Visible on hover */
+        }
+    </style>
 </head>
-<body>
-    <!-- INITIAL LOADING SCREEN -->
-    <div id="loading-screen" class="fixed inset-0 z-[100] bg-slate-950 flex flex-col items-center justify-center transition-opacity duration-500">
-        <div class="loader"></div>
-        <div class="mt-8 text-slate-500 font-black tracking-[0.3em] text-xs animate-pulse">INITIALIZING SYSTEM</div>
+<body class="m-0 p-0 antialiased">
+    <!-- Particles Background Container -->
+    <div id="particles-js" class="fixed inset-0 z-[-1] pointer-events-none"></div>
+
+    <div class="progress-wrap fixed top-0 left-0 w-full h-[3px] bg-white/10 z-[1000]">
+        <div class="progress-bar w-0 h-full bg-white"></div>
+    </div>
+    
+    <svg width="0" height="0" style="position: absolute;">
+      <defs>
+        <clipPath id="squircleClip" clipPathUnits="objectBoundingBox"><path d="M 0,0.5 C 0,0 0,0 0.5,0 S 1,0 1,0.5 1,1 0.5,1 0,1 0,0.5"></path></clipPath>
+      </defs>
+    </svg>
+
+    <header id="main-header" class="fixed top-0 left-0 w-full px-6 md:px-[8%] py-6 flex justify-between items-center z-[1001] transition-all duration-300">
+        <div class="logo-container logo lg:flex-1">
+            <a href="#" class="flex items-center">
+                <img src="baydevlogo.png" alt="Bay Dev Logo" class="h-10 brightness-0 invert opacity-0">
+            </a>
+        </div>
+        <nav class="hidden lg:flex items-center justify-center gap-8">
+            <a href="#why-choose" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">Why Us</a>
+            <a href="#services" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">Services</a>
+            <a href="#process" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">Process</a>
+            <a href="#tech-stack" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">Tech Stack</a>
+            <a href="#portfolio" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">Portfolio</a>
+            <a href="#web-packages" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">Pricing</a>
+            <a href="#faq" class="nav-link-hover-effect text-sm font-medium hover:text-white/60 transition-colors">FAQ</a>
+        </nav>
+        <div class="hidden lg:flex lg:flex-1 justify-end items-center">
+            <button id="openProjectModal" class="px-6 py-2 bg-white text-black rounded-full text-sm font-bold hover:scale-105 transition-transform">Get Started</button>
+        </div>
+        <button id="mobileMenuBtn" class="lg:hidden text-white flex items-center p-2 z-[1010]" aria-label="Open Mobile Menu">
+            <iconify-icon icon="ph:list-bold" class="text-3xl"></iconify-icon>
+        </button>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu" class="fixed inset-0 z-[2005] bg-[#050a0a] flex flex-col items-center justify-center gap-8 translate-x-full transition-transform duration-500">
+        <button id="closeMobileMenuBtn" class="absolute top-8 right-[8%] text-white">
+            <iconify-icon icon="ph:x-bold" class="text-3xl"></iconify-icon>
+        </button>
+        <a href="#why-choose" class="mobile-link text-2xl font-bold">Why Us</a>
+        <a href="#services" class="mobile-link text-2xl font-bold">Services</a>
+        <a href="#process" class="mobile-link text-2xl font-bold">Process</a>
+        <a href="#tech-stack" class="mobile-link text-2xl font-bold">Tech Stack</a>
+        <a href="#portfolio" class="mobile-link text-2xl font-bold">Portfolio</a>
+        <a href="#faq" class="mobile-link text-2xl font-bold">FAQ</a>
+        <a href="#contact" class="mobile-link px-8 py-3 bg-white text-black rounded-full font-bold">Contact Us</a>
     </div>
 
-    <div class="w-full max-w-full h-screen flex flex-col overflow-hidden">
-        <header class="flex justify-between items-center px-4 md:px-10 py-1 md:py-0.5 shrink-0">
-            <div class="flex items-center gap-5">
-                <img src="LOGOSTI.png" alt="Logo" class="h-10 md:h-14 object-contain">
-                <div>
-                    <div class="text-[0.65rem] text-slate-400 font-bold tracking-widest uppercase">POWERED BY Bay Developers</div>
-                    <div class="text-[0.55rem] text-slate-500 font-bold tracking-widest uppercase">Develop by ZERO</div>
-                    <h1 class="text-xl md:text-2xl font-black bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent italic leading-tight">KYU-WING</h1>
+    <section class="hero relative h-screen overflow-hidden flex items-center px-6 md:px-[8%] py-20 md:py-[100px]">
+        <div class="hero-content z-20 relative">
+            <h1 class="split-text text-[clamp(2.5rem,10vw,8rem)] leading-[1.1] font-extrabold tracking-[-2px]">Bay Dev <br>Palawan</h1>
+            <p class="fade-up max-w-[700px] mt-8 text-white/60 text-[1.2rem]">
+                Bay Developers transforms ideas into modern websites and custom software solutions designed to help you grow.
+            </p>
+            <div class="fade-up mt-12 flex items-center">
+                <a href="#portfolio" class="px-[35px] py-[15px] rounded-full font-semibold transition-all duration-300 inline-block cursor-pointer bg-white text-black hover:scale-105">View Our Work</a>
+                <a href="#contact" class="px-[35px] py-[15px] rounded-full font-semibold transition-all duration-300 inline-block cursor-pointer border border-white text-white bg-transparent ml-[15px] hover:bg-white/10">Free Consultation</a>
+            </div>
+        </div>
+        
+        <!-- Slideshow Container -->
+        <div class="hero-slideshow absolute right-0 top-0 w-full md:w-1/2 h-full z-0 pointer-events-none">
+            <div class="slide absolute inset-0 opacity-0 bg-cover bg-center will-change-[opacity]" style="background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=2072');"></div>
+            <div class="slide absolute inset-0 opacity-0 bg-cover bg-center will-change-[opacity]" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2026');"></div>
+            <div class="slide absolute inset-0 opacity-0 bg-cover bg-center will-change-[opacity]" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2070');"></div>
+        </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section class="py-20 md:py-[100px] px-6 md:px-[8%] relative z-10" id="why-choose">
+        <div class="mb-16">
+            <h2 class="text-4xl md:text-[3.5rem] font-bold fade-up">Why Choose Bay Developers</h2>
+            <p class="text-white/60 mt-4 fade-up">Committed to excellence in every line of code.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <h3 class="text-white text-xl font-bold mb-4">Professional Development</h3>
+                <p class="text-white/60">We build modern websites and systems using the latest technologies and industry standards.</p>
+            </div>
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <h3 class="text-white text-xl font-bold mb-4">Custom Solutions</h3>
+                <p class="text-white/60">Every project is designed according to your specific business requirements.</p>
+            </div>
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <h3 class="text-white text-xl font-bold mb-4">Responsive Design</h3>
+                <p class="text-white/60">Our websites look and perform beautifully on desktops, tablets, and mobile devices.</p>
+            </div>
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <h3 class="text-white text-xl font-bold mb-4">Reliable Support</h3>
+                <p class="text-white/60">We provide ongoing maintenance and technical support after deployment.</p>
+            </div>
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <h3 class="text-white text-xl font-bold mb-4">Affordable Pricing</h3>
+                <p class="text-white/60">High-quality solutions tailored to fit your budget.</p>
+            </div>
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <h3 class="text-white text-xl font-bold mb-4">Client-Focused Approach</h3>
+                <p class="text-white/60">Your success is our priority from planning to deployment.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Services Section -->
+    <section class="services px-6 md:px-[8%] py-20 md:py-[100px]" id="services">
+        <div class="w-full">
+            <h2 class="text-4xl md:text-[3.5rem] mb-12 font-bold fade-up">Our Services</h2>
+            <div class="services-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="service-card reveal-card p-12 bg-white/5 rounded-[30px] border border-transparent hover:border-white">
+                    <div class="mb-6">
+                        <iconify-icon icon="ph:globe-duotone" class="service-icon text-5xl text-white/30"></iconify-icon>
+                    </div>
+                    <h3 class="text-white text-2xl font-bold mb-6">Website Development</h3>
+                    <p class="text-white/60 mb-4 text-sm">Professional websites designed to establish your online presence and attract customers.</p>
+                    <ul class="text-white/60 space-y-2 text-sm"><li>Business & Corporate Websites</li><li>Landing Pages</li><li>Personal Portfolios</li><li>Organization Websites</li></ul>
+                </div>
+                <div class="service-card reveal-card p-12 bg-white/5 rounded-[30px] border border-transparent hover:border-white">
+                    <div class="mb-6">
+                        <iconify-icon icon="ph:layout-duotone" class="service-icon text-5xl text-white/30"></iconify-icon>
+                    </div>
+                    <h3 class="text-white text-2xl font-bold mb-6">Web-Based Systems</h3>
+                    <p class="text-white/60 mb-4 text-sm">Custom systems that automate operations and improve efficiency.</p>
+                    <ul class="text-white/60 space-y-2 text-sm"><li>Inventory & School Management</li><li>Booking & Appointment Systems</li><li>Monitoring & Custom Dashboards</li></ul>
+                </div>
+                <div class="service-card reveal-card p-12 bg-white/5 rounded-[30px] border border-transparent hover:border-white">
+                    <div class="mb-6">
+                        <iconify-icon icon="ph:shopping-bag-duotone" class="service-icon text-5xl text-white/30"></iconify-icon>
+                    </div>
+                    <h3 class="text-white text-2xl font-bold mb-6">E-Commerce Development</h3>
+                    <p class="text-white/60 mb-4 text-sm">Online stores designed to increase sales and improve customer experience.</p>
+                    <ul class="text-white/60 space-y-2 text-sm"><li>Product Management</li><li>Online Payments</li><li>Order Tracking</li></ul>
+                </div>
+                <div class="service-card reveal-card p-12 bg-white/5 rounded-[30px] border border-transparent hover:border-white">
+                    <div class="mb-6">
+                        <iconify-icon icon="ph:student-duotone" class="service-icon text-5xl text-white/30"></iconify-icon>
+                    </div>
+                    <h3 class="text-white text-2xl font-bold mb-6">School & Capstone</h3>
+                    <p class="text-white/60 mb-4 text-sm">Professional and innovative systems for academic requirements.</p>
+                    <ul class="text-white/60 space-y-2 text-sm"><li>Information & Management Systems</li><li>Monitoring & Database Systems</li></ul>
+                </div>
+                <div class="service-card reveal-card p-12 bg-white/5 rounded-[30px] border border-transparent hover:border-white">
+                    <div class="mb-6">
+                        <iconify-icon icon="ph:paint-brush-broad-duotone" class="service-icon text-5xl text-white/30"></iconify-icon>
+                    </div>
+                    <h3 class="text-white text-2xl font-bold mb-6">UI/UX Design</h3>
+                    <p class="text-white/60 mb-4 text-sm">Beautiful and intuitive user interfaces focused on experience and functionality.</p>
+                </div>
+                <div class="service-card reveal-card p-12 bg-white/5 rounded-[30px] border border-transparent hover:border-white">
+                    <div class="mb-6">
+                        <iconify-icon icon="ph:gear-duotone" class="service-icon text-5xl text-white/30"></iconify-icon>
+                    </div>
+                    <h3 class="text-white text-2xl font-bold mb-6">Maintenance & Support</h3>
+                    <p class="text-white/60 mb-4 text-sm">Keeping your website or system secure, updated, and performing at its best.</p>
                 </div>
             </div>
-            <div class="flex gap-3">
-                <label class="inline-flex items-center relative cursor-pointer scale-[0.75] origin-right mr-2 active:scale-90 transition-transform">
-                    <input class="peer hidden" id="toggle" type="checkbox" checked />
-                    <div
-                        class="relative w-[110px] h-[50px] bg-white border border-slate-200 peer-checked:bg-zinc-500 rounded-full after:absolute after:content-[''] after:w-[40px] after:h-[40px] after:bg-gradient-to-r from-orange-500 to-yellow-400 peer-checked:after:from-zinc-900 peer-checked:after:to-zinc-900 after:rounded-full after:top-[4px] after:left-[5px] peer-checked:after:left-[105px] peer-checked:after:translate-x-[-100%] shadow-sm duration-300 after:duration-300 after:shadow-md"
-                    ></div>
-                    <svg
-                        height="24"
-                        width="24"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="fill-orange-500 peer-checked:opacity-60 absolute w-6 h-6 left-[13px]"
-                    >
-                        <path
-                        d="M12,17c-2.76,0-5-2.24-5-5s2.24-5,5-5,5,2.24,5,5-2.24,5-5,5ZM13,0h-2V5h2V0Zm0,19h-2v5h2v-5ZM5,11H0v2H5v-2Zm19,0h-5v2h5v-2Zm-2.81-6.78l-1.41-1.41-3.54,3.54,1.41,1.41,3.54-3.54ZM7.76,17.66l-1.41-1.41-3.54,3.54,1.41,1.41,3.54-3.54Zm0-11.31l-3.54-3.54-1.41,1.41,3.54,3.54,1.41-1.41Zm13.44,13.44l-3.54-3.54-1.41,1.41,3.54,3.54,1.41-1.41Z"
-                        ></path>
-                    </svg>
-                    <svg
-                        height="24"
-                        width="24"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="fill-black opacity-60 peer-checked:opacity-100 peer-checked:fill-white absolute w-6 h-6 right-[13px]"
-                    >
-                        <path
-                        d="M12.009,24A12.067,12.067,0,0,1,.075,10.725,12.121,12.121,0,0,1,10.1.152a13,13,0,0,1,5.03.206,2.5,2.5,0,0,1,1.8,1.8,2.47,2.47,0,0,1-.7,2.425c-4.559,4.168-4.165,10.645.807,14.412h0a2.5,2.5,0,0,1-.7,4.319A13.875,13.875,0,0,1,12.009,24Zm.074-22a10.776,10.776,0,0,0-1.675.127,10.1,10.1,0,0,0-8.344,8.8A9.928,9.928,0,0,0,4.581,18.7a10.473,10.473,0,0,0,11.093,2.734.5.5,0,0,0,.138-.856h0C9.883,16.1,9.417,8.087,14.865,3.124a.459.459,0,0,0,.127-.465.491.491,0,0,0-.356-.362A10.68,10.68,0,0,0,12.083,2ZM20.5,12a1,1,0,0,1-.97-.757l-.358-1.43L17.74,9.428a1,1,0,0,1,.035-1.94l1.4-.325.351-1.406a1,1,0,0,1,1.94,0l.355,1.418,1.418.355a1,1,0,0,1,0,1.94l-1.418.355-.355,1.418A1,1,0,0,1,20.5,12ZM16,14a1,1,0,0,0,2,0A1,1,0,0,0,16,14Zm6,4a1,1,0,0,0,2,0A1,1,0,0,0,22,18Z"
-                        ></path>
-                    </svg>
-                </label>
-                <button class="bg-slate-900/50 hover:bg-slate-800 text-slate-200 px-3 md:px-4 py-1.5 font-bold rounded-xl flex items-center gap-2.5 border border-slate-800 hover:border-slate-700 shadow-2xl shadow-black/40 transition-all active:scale-95 group" onclick="launchCustomerWindow()"><i data-lucide="monitor" class="w-4 h-4 text-blue-500 group-hover:text-blue-400 transition-colors"></i> <span class="hidden sm:inline">Lobby TV</span></button>
-                <button id="btn-portal-home" class="hidden bg-slate-900/50 hover:bg-slate-800 text-slate-200 px-3 md:px-4 py-1.5 font-bold rounded-xl flex items-center gap-2.5 border border-slate-800 hover:border-slate-700 shadow-2xl shadow-black/40 transition-all active:scale-95 group" onclick="switchView('portal')"><i data-lucide="home" class="w-4 h-4 text-indigo-500 group-hover:text-indigo-400 transition-colors"></i> <span class="hidden sm:inline">Portal</span></button>
-            </div>
-        </header>
+        </div>
+    </section>
 
-        <main class="flex-1 p-5 md:p-10 overflow-hidden flex flex-col">
-            <!-- MAIN PORTAL -->
-            <div id="view-portal" class="flex flex-col h-full overflow-y-auto pr-2">
-                <div class="flex flex-col items-center justify-center flex-1 gap-4 md:gap-8 pb-[10vh]">
-                    <div class="bg-slate-900/50 backdrop-blur border border-slate-800 p-6 md:p-10 rounded-3xl text-center w-full max-w-md cursor-pointer transition-all hover:-translate-y-2 hover:border-blue-500/50 hover:bg-slate-900 shadow-2xl group flex flex-col items-center justify-center active:scale-95" onclick="switchView('landing')">
-                        <i data-lucide="monitor" class="w-16 h-16 mb-4 group-hover:scale-110 transition text-blue-500"></i>
-                        <h2 class="text-2xl font-bold my-2 text-white tracking-tight">Operator Terminals</h2>
-                        <p class="text-slate-400 text-sm leading-relaxed">Access specific counter dashboards to call and manage tickets for your department.</p>
-                    </div>
-                    <div class="bg-slate-900/50 backdrop-blur border border-slate-800 p-6 md:p-10 rounded-3xl text-center w-full max-w-md cursor-pointer transition-all hover:-translate-y-2 hover:border-indigo-500/50 hover:bg-slate-900 shadow-2xl group flex flex-col items-center justify-center active:scale-95" onclick="switchView('login')">
-                        <i data-lucide="lock" class="w-16 h-16 mb-4 group-hover:scale-110 transition text-indigo-500"></i>
-                        <h2 class="text-2xl font-bold my-2 text-white tracking-tight">System Administration</h2>
-                        <p class="text-slate-400 text-sm leading-relaxed">Configure departments, reset systems, and manage global display settings.</p>
+    <!-- Development Process Section -->
+    <section class="py-20 md:py-[100px] px-6 md:px-[8%] relative z-10" id="process">
+        <div class="mb-16">
+            <h2 class="text-4xl md:text-[3.5rem] font-bold fade-up">Development Process</h2>
+            <p class="text-white/60 mt-4 fade-up">From initial spark to final deployment, we guide you every step of the way.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="reveal-card p-8 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="text-4xl font-black text-white/10 mb-4">01</div>
+                <h3 class="text-white text-xl font-bold mb-3">Discovery & Consultation</h3>
+                <p class="text-white/60 text-sm">We understand your goals, requirements, and vision for the project.</p>
+            </div>
+            <div class="reveal-card p-8 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="text-4xl font-black text-white/10 mb-4">02</div>
+                <h3 class="text-white text-xl font-bold mb-3">Planning & Strategy</h3>
+                <p class="text-white/60 text-sm">We create a detailed roadmap and system architecture.</p>
+            </div>
+            <div class="reveal-card p-8 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="text-4xl font-black text-white/10 mb-4">03</div>
+                <h3 class="text-white text-xl font-bold mb-3">Design</h3>
+                <p class="text-white/60 text-sm">We design modern and user-friendly interfaces.</p>
+            </div>
+            <div class="reveal-card p-8 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="text-4xl font-black text-white/10 mb-4">04</div>
+                <h3 class="text-white text-xl font-bold mb-3">Development</h3>
+                <p class="text-white/60 text-sm">Our team transforms designs into fully functional solutions.</p>
+            </div>
+            <div class="reveal-card p-8 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="text-4xl font-black text-white/10 mb-4">05</div>
+                <h3 class="text-white text-xl font-bold mb-3">Testing & QA</h3>
+                <p class="text-white/60 text-sm">We thoroughly test every feature before launch.</p>
+            </div>
+            <div class="reveal-card p-8 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="text-4xl font-black text-white/10 mb-4">06</div>
+                <h3 class="text-white text-xl font-bold mb-3">Deployment & Support</h3>
+                <p class="text-white/60 text-sm">We launch your project and provide ongoing assistance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="tech-stack py-20 md:py-[100px] px-6 md:px-[8%] relative z-10" id="tech-stack">
+        <h2 class="text-4xl md:text-[3.5rem] font-bold fade-up mb-16">Our Tech Stack</h2>
+
+        <div class="flex flex-col lg:flex-row gap-16 items-center lg:items-start">
+            <!-- Left side: Description on hover -->
+            <div class="tech-description-container w-full lg:w-1/2 flex flex-col justify-center items-center lg:items-start text-center lg:text-left min-h-[200px] lg:min-h-[300px] relative">
+                <div id="tech-glow" class="absolute inset-0 pointer-events-none opacity-0 blur-[70px] z-[-1]" style="background: radial-gradient(circle at 0% 50%, white, transparent 70%);"></div>
+                <h3 id="tech-title" class="text-5xl font-extrabold text-white mb-4"></h3>
+                <p id="tech-description" class="text-white/70 text-lg max-w-md"></p>
+            </div>
+
+            <!-- Right side: Icons Grid -->
+            <div class="tech-icons-grid w-full lg:w-1/2 grid grid-cols-4 sm:grid-cols-5 gap-3 sm:gap-4 justify-items-center">
+                <!-- Icons are generated with data attributes for the hover script -->
+                
+                <!-- Figma -->
+                <div class="relative tech-icon-item group" data-tech-name="Figma" data-tech-description="Our primary tool for interface design and collaborative prototyping." data-tech-color="#F24E1E">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-[#F24E1E] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:figma" class="text-2xl sm:text-3xl text-white"></iconify-icon>
+                        </div>
                     </div>
                 </div>
 
-                <!-- PORTAL FOOTER -->
-                <footer class="mt-auto py-6 border-t border-slate-800/40 flex flex-col items-center gap-4 bg-slate-950/20">
-                    <div class="flex flex-col items-center text-center">
-                        <span class="text-[0.65rem] font-black text-slate-600 uppercase tracking-[0.5em] mb-3">Powered by</span>
-                        <h3 class="text-2xl font-black text-white italic tracking-tighter">BAY DEVELOPERS</h3>
+                <!-- HTML -->
+                <div class="relative tech-icon-item group" data-tech-name="HTML5" data-tech-description="The standard markup language for documents designed for web display." data-tech-color="#E34F26">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-14 h-14 bg-[#E34F26] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:html5" class="text-3xl text-white"></iconify-icon>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="social-container">
-                        <div class="social-child child-discord">
-                            <a href="https://discord.gg/VR3j367a" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="Join our Discord">
-                                <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M524.531,69.836a1.5,1.5,0,0,0-.764-.7A485.065,485.065,0,0,0,404.081,32.03a1.816,1.816,0,0,0-1.923.91,337.461,337.461,0,0,0-14.9,30.6,447.848,447.848,0,0,0-134.426,0,309.541,309.541,0,0,0-15.135-30.6,1.89,1.89,0,0,0-1.924-.91A483.689,483.689,0,0,0,116.085,69.137a1.712,1.712,0,0,0-.788.676C39.068,183.651,18.186,294.69,28.43,404.354a2.016,2.016,0,0,0,.765,1.375A487.666,487.666,0,0,0,176.02,479.918a1.9,1.9,0,0,0,2.063-.676A348.2,348.2,0,0,0,208.12,430.4a1.819,1.819,0,0,0-1.017-2.526,328.1,328.1,0,0,1-45.939-21.922,1.874,1.874,0,0,1-.184-3.127c3.135-2.343,6.27-4.784,9.257-7.248a1.791,1.791,0,0,1,1.875-.246C261.385,441.9,378.615,441.9,467.872,395.336a1.791,1.791,0,0,1,1.875.246c2.987,2.464,6.122,4.9,9.257,7.248a1.874,1.874,0,0,1-.184,3.127,330.21,330.21,0,0,1-45.939,21.922,1.819,1.819,0,0,0-1.017,2.526,350.7,350.7,0,0,0,30.037,48.842,1.908,1.908,0,0,0,2.063.676A486.555,486.555,0,0,0,610.7,405.729a1.882,1.882,0,0,0,.765-1.352C623.729,277.594,590.933,167.465,524.531,69.836ZM222.491,337.58c-28.972,0-52.844-26.587-52.844-59.239S193.056,219.1,222.491,219.1c29.665,0,53.306,26.82,52.843,59.239C275.334,310.993,251.924,337.58,222.491,337.58Zm195.38,0c-28.971,0-52.843-26.587-52.843-59.239S388.437,219.1,417.871,219.1c29.667,0,53.307,26.82,52.844,59.239C470.715,310.993,447.538,337.58,417.871,337.58Z"></path>
-                                </svg>
-                            </a>
-                        </div>
-                        <div class="social-child child-instagram">
-                            <a href="https://www.instagram.com/baydevpalawan/" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="Follow us on Instagram">
-                                <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path>
-                                </svg>
-                            </a>
-                        </div>
-                        <div class="social-child child-github">
-                            <a href="https://github.com/baydevolpersppc" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="View our GitHub">
-                                <svg viewBox="0 0 496 512" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path>
-                                </svg>
-                            </a>
-                        </div>
-                        <div class="social-child child-facebook">
-                            <a href="https://web.facebook.com/profile.php?id=61590869843682" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="Visit our Facebook">
-                                <svg viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"></path>
-                                </svg>
-                            </a>
+                <!-- Tailwind -->
+                <div class="relative tech-icon-item group" data-tech-name="Tailwind CSS" data-tech-description="A utility-first CSS framework for building modern websites fast." data-tech-color="#06B6D4">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-14 h-14 bg-[#06B6D4] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:tailwindcss" class="text-3xl text-white"></iconify-icon>
                         </div>
                     </div>
-                    
-                    <div class="text-[0.6rem] text-slate-700 font-black uppercase tracking-[0.3em] pb-2">
-                        Developed by <span class="text-blue-500/50">ZERO Kyu-wing Management System</span> v3.0
+                </div>
+
+                <!-- JavaScript -->
+                <div class="relative tech-icon-item group" data-tech-name="JavaScript" data-tech-description="The core language for building interactive logic and modern web applications." data-tech-color="#F7DF1E">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-14 h-14 bg-[#F7DF1E] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:javascript" class="text-3xl text-black"></iconify-icon>
+                        </div>
                     </div>
-                </footer>
+                </div>
+
+                <!-- React -->
+                <div class="relative tech-icon-item group" data-tech-name="React" data-tech-description="Our standard for building reactive, scalable component-based UIs." data-tech-color="#61DAFB">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-14 h-14 bg-[#23272F] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:react" class="text-3xl text-[#61DAFB]"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next.js -->
+                <div class="relative tech-icon-item group" data-tech-name="Next.js" data-tech-description="The leading React framework for high-performance production applications." data-tech-color="#FFFFFF">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-14 h-14 bg-white flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:nextdotjs" class="text-3xl text-black"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Framer Motion -->
+                <div class="relative tech-icon-item group" data-tech-name="Framer Motion" data-tech-description="Modern animation library for React, delivering fluid layout and transitions." data-tech-color="#BB00FF">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-black flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:framer" class="text-2xl sm:text-3xl text-white"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GSAP -->
+                <div class="relative tech-icon-item group" data-tech-name="GSAP" data-tech-description="Industry-standard JavaScript toolset for building high-performance animations." data-tech-color="#88CE02">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-white flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:greensock" class="text-3xl sm:text-4xl text-[#88CE02]"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Three.js -->
+                <div class="relative tech-icon-item group" data-tech-name="Three.js" data-tech-description="Enabling immersive 3D WebGL experiences directly within the browser." data-tech-color="#FFFFFF">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-black flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:threedotjs" class="text-2xl sm:text-3xl text-white"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHP -->
+                <div class="relative tech-icon-item group" data-tech-name="PHP" data-tech-description="A widely-used, reliable server-side scripting language for web development." data-tech-color="#777BB4">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-[#777BB4] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:php" class="text-3xl sm:text-4xl text-white"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Laravel -->
+                <div class="relative tech-icon-item group" data-tech-name="Laravel" data-tech-description="The PHP framework for web artisans—elegant, secure, and highly scalable." data-tech-color="#FF2D20">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-white flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:laravel" class="text-2xl sm:text-3xl text-[#FF2D20]"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node.js -->
+                <div class="relative tech-icon-item group" data-tech-name="Node.js" data-tech-description="An event-driven JavaScript runtime for building scalable server-side applications." data-tech-color="#339933">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-[#339933] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:nodedotjs" class="text-3xl sm:text-4xl text-white"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Supabase -->
+                <div class="relative tech-icon-item group" data-tech-name="Supabase" data-tech-description="The open-source Firebase alternative with a full Postgres database." data-tech-color="#3ECF8E">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-14 h-14 bg-[#1C1C1C] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:supabase" class="text-3xl text-[#3ECF8E]"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Firebase -->
+                <div class="relative tech-icon-item group" data-tech-name="Firebase" data-tech-description="Google's platform for real-time databases, authentication, and hosting." data-tech-color="#FFCA28">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-[#FFCA28] flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="simple-icons:firebase" class="text-2xl sm:text-3xl text-[#039BE5]"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lenis -->
+                <div class="relative tech-icon-item group" data-tech-name="Lenis Scroll" data-tech-description="Lightweight library providing high-performance inertial scrolling for web experiences." data-tech-color="#FFFFFF">
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 transition-colors group-hover:bg-white/10"></div>
+                    <div class="relative p-2 sm:p-3 tech-icon-inner">
+                        <div style="clip-path: url(#squircleClip)" class="w-12 h-12 sm:w-14 sm:h-14 bg-white flex items-center justify-center cursor-pointer transform transition-all duration-300 group-hover:scale-110">
+                            <iconify-icon icon="ph:mouse-simple" class="text-2xl sm:text-3xl text-black"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <!-- ADMIN LOGIN VIEW -->
-            <div id="view-login" class="hidden flex flex-col h-full">
-                <div class="flex flex-col items-center justify-center flex-1 gap-8 pb-[10vh]">
-                    <div class="bg-slate-900 border border-slate-800 p-10 rounded-3xl text-center w-full max-w-md shadow-2xl flex flex-col items-center">
-                        <h2 class="text-2xl font-bold mb-6 text-white italic flex items-center gap-3"><i data-lucide="shield-check" class="text-indigo-400 w-8 h-8"></i> ADMIN ACCESS</h2>
-                        <div class="flex flex-col items-center gap-4">
-                            <input type="password" id="adminPin" placeholder="PIN" class="bg-slate-950 border border-slate-800 text-white p-4 rounded-2xl text-center w-full max-w-[240px] text-2xl tracking-[8px] outline-none focus:border-blue-500 transition-all">
-                            <button class="bg-indigo-600 text-white font-black py-4 px-8 rounded-2xl w-full max-w-[240px] hover:bg-indigo-500 transition-all shadow-xl shadow-indigo-500/20 active:scale-95" onclick="handleAdminLogin()">AUTHORIZE</button>
+    <!-- Portfolio Section -->
+    <section class="portfolio-wrap min-h-screen relative flex items-center" id="portfolio">
+        <div class="absolute top-[10%] left-6 md:left-[8%] z-20">
+            <h2 class="text-[3.5rem] font-bold fade-up">Featured Projects</h2>
+        </div>
+        <div class="portfolio-container flex w-max h-screen items-center px-[10vw]">
+            <div class="project-card">
+                <img src="assets/projects/loginsti.png" alt="School Management System Dashboard" class="project-image" loading="lazy">
+                <div class="project-info"><h4 class="project-title">School Management System</h4><p class="project-description">Academic & records platform.</p></div>
+            </div>
+            <div class="project-card">
+                <img src="assets/projects/operationaldashboard.png" alt="Exam Proctor Monitoring System Interface" class="project-image" loading="lazy">
+                <div class="project-info"><h4 class="project-title">Exam Proctor Monitoring</h4><p class="project-description">Assigning & monitoring examiners efficiently.</p></div>
+            </div>
+            <div class="project-card">
+                <video src="assets/projects/siargao.mp4" class="project-image" autoplay loop muted playsinline></video>
+                <div class="project-info"><h4 class="project-title">Landing Page</h4><p class="project-description">A visually appealing landing page focused on user experience and conversions.</p></div>
+            </div>
+            <div class="project-card">
+                <img src="assets/projects/hotelbooking.jpg" alt="Hotel Room Booking and Management System" class="project-image" loading="lazy">
+                <div class="project-info"><h4 class="project-title">Hotel Booking</h4><p class="project-description">Reservation & room management.</p></div>
+            </div>
+            <div class="project-card">
+                <img src="assets/projects/baguio.png" alt="Corporate Business Website Showcase" class="project-image" loading="lazy">
+                <div class="project-info"><h4 class="project-title">Business Website</h4><p class="project-description">High-engagement corporate site.</p></div>
+            </div>
+            <div class="project-card">
+                <img src="assets/projects/bahaykubo.png" alt="E-Commerce Store Front and Product Management" class="project-image" loading="lazy">
+                <div class="project-info"><h4 class="project-title">E-Commerce Platform</h4><p class="project-description">Complete selling solution.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 md:py-[100px] px-6 md:px-[8%] relative z-10" id="web-packages">
+        <div class="mb-16">
+            <h2 class="text-4xl md:text-[3.5rem] font-bold fade-up">Web Solutions</h2>
+            <p class="text-white/60 mt-4 fade-up">Tailored development packages for every stage of growth.</p>
+            <p class="text-white/40 text-sm mt-2 italic fade-up">* Note: Prices are estimates and may vary depending on specific project requirements.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Starter Website -->
+            <div class="card-effect reveal-card flex justify-center">
+                <div class="card-inner">
+                    <div class="card__liquid"></div>
+                    <div class="card__shine"></div>
+                    <div class="card__glow"></div>
+                    <div class="card__content">
+                        <div class="card__image" style="--bg-color: #1a1a1a; background: linear-gradient(45deg, #111, #222)">
+                            <iconify-icon icon="ph:browser-duotone" class="text-5xl text-white/20"></iconify-icon>
                         </div>
-                        <button class="mt-8 bg-slate-800/50 hover:bg-slate-800 text-slate-400 hover:text-white px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition active:scale-95" onclick="switchView('portal')">Cancel & Return</button>
+                        <div class="card__text">
+                            <p class="card__title">Starter</p>
+                            <p class="card__description">1–5 Pages, Mobile Responsive, Contact Form, Facebook Integration</p>
+                        </div>
+                        <div class="card__footer">
+                            <div class="card__price">₱3,500+</div>
+                            <div class="card__button project-modal-trigger">
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 12H19M12 5V19" stroke="currentColor" stroke-width="2"></path></svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-        <!-- LANDING VIEW -->
-        <div id="view-landing" class="hidden flex flex-col h-full overflow-y-auto pr-2 custom-scrollbar">
-            <button class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 mb-8 w-fit active:scale-95" onclick="switchView('portal')"><i data-lucide="chevron-left" class="w-4 h-4"></i> Home Portal</button>
-            <h2 class="text-2xl font-bold text-center mb-8">Select Your Terminal</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="landingDesks"></div>
+            <!-- Business Website -->
+            <div class="card-effect reveal-card flex justify-center">
+                <div class="card-inner">
+                    <div class="card__badge">TRENDING</div>
+                    <div class="card__liquid"></div>
+                    <div class="card__shine"></div>
+                    <div class="card__glow"></div>
+                    <div class="card__content">
+                        <div class="card__image" style="--bg-color: #333333; background: linear-gradient(45deg, #222, #333)">
+                            <iconify-icon icon="ph:buildings-duotone" class="text-5xl text-white/20"></iconify-icon>
+                        </div>
+                        <div class="card__text">
+                            <p class="card__title">Business</p>
+                            <p class="card__description">Home, About, Services, Gallery, Contact Page, Google Maps</p>
+                        </div>
+                        <div class="card__footer">
+                            <div class="card__price">₱15,000+</div>
+                            <div class="card__button project-modal-trigger">
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 12H19M12 5V19" stroke="currentColor" stroke-width="2"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Website -->
+            <div class="card-effect reveal-card flex justify-center">
+                <div class="card-inner">
+                    <div class="card__liquid"></div>
+                    <div class="card__shine"></div>
+                    <div class="card__glow"></div>
+                    <div class="card__content">
+                        <div class="card__image" style="--bg-color: #4d4d4d; background: linear-gradient(45deg, #333, #444)">
+                            <iconify-icon icon="ph:rocket-launch-duotone" class="text-5xl text-white/20"></iconify-icon>
+                        </div>
+                        <div class="card__text">
+                            <p class="card__title">Enterprise</p>
+                            <p class="card__description">Booking system, Online ordering, Admin dashboard, Database</p>
+                        </div>
+                        <div class="card__footer">
+                            <div class="card__price">₱30,000+</div>
+                            <div class="card__button project-modal-trigger">
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 12H19M12 5V19" stroke="currentColor" stroke-width="2"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rating and Feedback Section -->
+    <!-- Dito nakalagay ang mga feedback at rating mula sa ating mga naging kliyente -->
+    <section class="py-20 md:py-[100px] px-6 md:px-[8%] relative z-10" id="feedback">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+            <div>
+                <h2 class="text-4xl md:text-[3.5rem] font-bold fade-up">Feedback and Rating</h2>
+                <p class="text-white/60 mt-4 fade-up">Maraming salamat sa inyong tiwala at suporta sa Bay Developers.</p>
+            </div>
+            <button id="openFeedbackModal" class="px-8 py-4 rounded-full border border-white font-semibold transition-all hover:bg-white hover:text-black fade-up">Add Your Feedback</button>
         </div>
 
-        <!-- ADMIN VIEW -->
-        <div id="view-admin" class="hidden flex flex-col h-full overflow-y-auto pr-2 custom-scrollbar">
-            <button class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 mb-6 w-fit active:scale-95 shrink-0" onclick="switchView('landing')"><i data-lucide="chevron-left" class="w-4 h-4"></i> Station Selection</button>
-            
-            <!-- Dashboard Stats Overview -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 shrink-0">
-                <div class="bg-slate-900/50 backdrop-blur border border-slate-800 p-5 rounded-2xl flex items-center gap-5 shadow-lg shadow-black/20">
-                    <div class="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 shadow-inner">
-                        <i data-lucide="layout" class="w-7 h-7"></i>
-                    </div>
-                    <div>
-                        <div class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">Total Terminals</div>
-                        <div class="text-3xl font-black text-white" id="stat-total-desks">0</div>
-                    </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Halimbawa ng isang feedback card mula sa kliyente -->
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="flex items-center mb-4 text-yellow-400">
+                    <span class="text-xl">★★★★★</span>
                 </div>
-                <div class="bg-slate-900/50 backdrop-blur border border-slate-800 p-5 rounded-2xl flex items-center gap-5 shadow-lg shadow-black/20">
-                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 shadow-inner">
-                        <i data-lucide="users" class="w-7 h-7"></i>
-                    </div>
+                <p class="text-white mb-6 italic">"Napakaganda ng kinalabasan ng aming website. Napakabilis nilang kausap at talagang sinusunod ang aming gusto. Sulit ang bayad!"</p>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-white/10 rounded-full mr-4 flex items-center justify-center font-bold">MR</div>
                     <div>
-                        <div class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">Queue Throughput</div>
-                        <div class="text-3xl font-black text-white" id="stat-total-serving">0</div>
-                    </div>
-                </div>
-                <div class="bg-slate-900/50 backdrop-blur border border-slate-800 p-5 rounded-2xl flex items-center gap-5 shadow-lg shadow-black/20">
-                    <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-500 shadow-inner">
-                        <i data-lucide="activity" class="w-7 h-7"></i>
-                    </div>
-                    <div>
-                        <div class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">System Health</div>
-                        <div class="text-sm font-black text-emerald-500 flex items-center gap-2 uppercase tracking-widest mt-1">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Optimal
-                        </div>
+                        <h4 class="font-bold">Marc Anthony Reyes</h4>
+                        <p class="text-white/40 text-sm">BSTM Student</p>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800 rounded-2xl overflow-hidden mb-8 shrink-0 shadow-2xl">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-sm font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2"><i data-lucide="plus-circle" class="w-4 h-4 text-blue-500"></i> Provision New Terminal</h3>
-                        <span class="text-[0.6rem] text-slate-600 font-bold uppercase tracking-widest">System Configuration</span>
-                    </div>
-                    <div class="flex flex-wrap gap-6 items-end">
-                        <div class="flex flex-col gap-2 flex-1 min-w-[240px]">
-                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest ml-1">Friendly Name</label>
-                            <input type="text" id="newDeptName" placeholder="e.g., Admissions Desk" class="bg-slate-950/50 border border-slate-800 text-white px-4 py-2.5 rounded-xl outline-none focus:border-blue-500/50 transition-all w-full placeholder:text-slate-700">
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest ml-1">Letter Prefix</label>
-                            <input type="text" id="newDeptPrefix" placeholder="AD" maxlength="2" class="bg-slate-950/50 border border-slate-800 text-white px-4 py-2.5 rounded-xl outline-none focus:border-blue-500/50 w-24 uppercase text-center font-black tracking-widest">
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest ml-1">Theme</label>
-                            <input type="color" id="newDeptColor" class="w-14 h-[46px] cursor-pointer rounded-xl bg-slate-950/50 border border-slate-800 p-1.5 transition-transform hover:scale-105">
-                        </div>
-                        <button class="bg-blue-600 hover:bg-blue-500 text-white font-black h-[46px] px-8 rounded-xl transition-all flex items-center gap-2 active:scale-95 shadow-xl shadow-blue-500/20 uppercase tracking-widest text-xs" onclick="addNewDesk()">
-                            <i data-lucide="plus" class="w-5 h-5"></i> Create Terminal
-                        </button>
+            <!-- Pangalawang feedback card -->
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="flex items-center mb-4 text-yellow-400">
+                    <span class="text-xl">★★★★★</span>
+                </div>
+                <p class="text-white mb-6 italic">"Yung inventory system na ginawa nila ay sobrang nakatulong sa aking tindahan. Wala na kaming hirap sa pag-track ng aming stocks araw-araw."</p>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-white/10 rounded-full mr-4 flex items-center justify-center font-bold">ES</div>
+                    <div>
+                        <h4 class="font-bold">Elena Santos</h4>
+                        <p class="text-white/40 text-sm">Grocer Store Owner</p>
                     </div>
                 </div>
             </div>
 
-            <!-- GLOBAL BROADCAST CONFIG -->
-            <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800 rounded-2xl overflow-hidden mb-8 shrink-0 shadow-2xl">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-sm font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2"><i data-lucide="megaphone" class="w-4 h-4 text-orange-400"></i> Lobby Broadcast (LED Signboard)</h3>
-                        <span class="text-[0.6rem] text-slate-600 font-bold uppercase tracking-widest">Global Ticker Message</span>
-                    </div>
-                    <div class="flex flex-wrap gap-6 items-end">
-                        <div class="flex flex-col gap-2 flex-1 min-w-[300px]">
-                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest ml-1">Scrolling Message</label>
-                            <input type="text" id="globalNotification" placeholder="Enter message for Lobby TV header..." class="bg-slate-950/50 border border-slate-800 text-white px-4 py-2.5 rounded-xl outline-none focus:border-orange-500/50 transition-all w-full">
-                        </div>
-                        <div class="flex gap-3">
-                            <button class="bg-orange-600 hover:bg-orange-500 text-white font-black h-[46px] px-8 rounded-xl transition-all flex items-center gap-2 active:scale-95 shadow-xl shadow-orange-500/20 uppercase tracking-widest text-xs" onclick="updateGlobalNotification()">
-                                <i data-lucide="send" class="w-5 h-5"></i> Broadcast
-                            </button>
-                            <button class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-black h-[46px] px-6 rounded-xl transition-all flex items-center gap-2 active:scale-95 shadow-xl shadow-black/20 uppercase tracking-widest text-xs" onclick="resetGlobalNotification()">
-                                <i data-lucide="rotate-ccw" class="w-5 h-5"></i> Reset
-                            </button>
-                        </div>
+            <!-- Pangatlong feedback card -->
+            <div class="reveal-card p-10 bg-white/5 rounded-[30px] border border-transparent hover:border-white/20">
+                <div class="flex items-center mb-4 text-yellow-400">
+                    <span class="text-xl">★★★★★</span>
+                </div>
+                <p class="text-white mb-6 italic">"Professional sila magtrabaho at talagang world-class ang design. Rekomendado ko ito sa mga naghahanap ng de-kalidad na system."</p>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-white/10 rounded-full mr-4 flex items-center justify-center font-bold">RL</div>
+                    <div>
+                        <h4 class="font-bold">Roberto Lim</h4>
+                        <p class="text-white/40 text-sm">Vice Principal, STI COLLEGE</p>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- GLOBAL ALERT SYSTEM -->
-            <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800 rounded-2xl overflow-hidden mb-8 shrink-0 shadow-2xl">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-sm font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2"><i data-lucide="bell" class="w-4 h-4 text-red-500"></i> Global Alert System</h3>
-                        <span class="text-[0.6rem] text-slate-600 font-bold uppercase tracking-widest">Urgent Broadcast</span>
+    <!-- Feedback Pop-up Modal -->
+    <div id="feedbackModal" class="fixed inset-0 z-[2000] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" id="closeModalOverlay"></div>
+        <div class="relative bg-[#0a0f0f] border border-white/10 p-8 md:p-12 rounded-[30px] w-full max-w-lg mx-4 z-10">
+            <h3 class="text-3xl font-bold mb-2">Share Your Experience</h3>
+            <p class="text-white/60 mb-8">We value your partnership with Bay Developers.</p>
+            <form id="feedbackForm" class="space-y-4">
+                <input type="text" id="fbName" name="name" placeholder="Your Name" required class="w-full p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                <input type="text" id="fbRole" name="role" placeholder="Your Role / Company" required class="w-full p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                <div class="flex gap-2 text-yellow-400 py-2 text-2xl" id="starRating">
+                    <span class="cursor-pointer hover:scale-120 transition-transform" data-val="1">★</span>
+                    <span class="cursor-pointer hover:scale-120 transition-transform" data-val="2">★</span>
+                    <span class="cursor-pointer hover:scale-120 transition-transform" data-val="3">★</span>
+                    <span class="cursor-pointer hover:scale-120 transition-transform" data-val="4">★</span>
+                    <span class="cursor-pointer hover:scale-120 transition-transform" data-val="5">★</span>
+                </div>
+                <textarea id="fbText" name="message" placeholder="How was your experience working with us?" required rows="4" class="w-full p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors"></textarea>
+                <button type="submit" class="w-full py-5 rounded-full font-bold bg-white text-black hover:scale-[1.02] transition-transform active:scale-95">Submit Review</button>
+            </form>
+            <button id="closeModalBtn" class="absolute top-6 right-6 text-white/40 hover:text-white transition-colors">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Project Pop-up Modal -->
+    <div id="projectModal" class="fixed inset-0 z-[2000] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" id="closeProjectModalOverlay"></div>
+        <div class="relative bg-[#0a0f0f] border border-white/10 p-8 md:p-12 rounded-[30px] w-full max-w-lg mx-4 z-10 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-3xl font-bold mb-2">Start Your Project</h3>
+            <p class="text-white/60 mb-8">Tell us about your vision and let's build something great together.</p>
+            <form id="projectForm" class="space-y-4">
+                <div class="relative">
+                    <iconify-icon icon="ph:user-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></iconify-icon>
+                    <input type="text" name="name" placeholder="Your Name" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                </div>
+                <div class="relative">
+                    <iconify-icon icon="ph:envelope-simple-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></iconify-icon>
+                    <input type="email" name="email" placeholder="Email Address" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                </div>
+                <div class="relative">
+                    <iconify-icon icon="ph:phone-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></iconify-icon>
+                    <input type="tel" name="phone" placeholder="Phone Number" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                </div>
+                <div class="relative">
+                    <iconify-icon icon="ph:briefcase-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"></iconify-icon>
+                    <select name="project_type" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors appearance-none">
+                        <option value="" disabled selected class="bg-[#050a0a]">Select Project Type</option>
+                        <option value="website" class="bg-[#050a0a]">Website Development</option>
+                        <option value="system" class="bg-[#050a0a]">Custom Web System</option>
+                        <option value="ecommerce" class="bg-[#050a0a]">E-Commerce</option>
+                        <option value="capstone" class="bg-[#050a0a]">Capstone / Academic</option>
+                        <option value="other" class="bg-[#050a0a]">Other</option>
+                    </select>
+                    <iconify-icon icon="ph:caret-down-bold" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"></iconify-icon>
+                </div>
+                <div class="relative">
+                    <iconify-icon icon="ph:chat-centered-text-bold" class="absolute left-4 top-5 text-white/40"></iconify-icon>
+                    <textarea name="details" placeholder="Tell us more about the project requirements..." required rows="4" class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors"></textarea>
+                </div>
+                <button type="submit" class="w-full py-5 rounded-full font-bold bg-white text-black hover:scale-[1.02] transition-transform active:scale-95">Send Project Inquiry</button>
+            </form>
+            <button id="closeProjectModalBtn" class="absolute top-6 right-6 text-white/40 hover:text-white transition-colors">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Custom Notification Toast -->
+    <div id="notificationToast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[3000] flex items-center gap-4 bg-white text-black px-6 py-4 rounded-2xl shadow-2xl transition-all duration-500 translate-y-20 opacity-0 pointer-events-none">
+        <div id="notificationIconWrap" class="flex items-center justify-center w-10 h-10 bg-green-500 rounded-full text-white shrink-0">
+            <iconify-icon id="notificationIcon" icon="ph:check-bold" class="text-xl"></iconify-icon>
+        </div>
+        <div>
+            <p id="notificationMessage" class="font-bold text-sm"></p>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <section class="py-20 md:py-[100px] px-6 md:px-[8%] relative z-10" id="faq">
+        <div class="mb-16">
+            <h2 class="text-4xl md:text-[3.5rem] font-bold fade-up">Frequently Asked Questions</h2>
+            <p class="text-white/60 mt-4 fade-up">Find answers to common questions about our services.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-16 md:gap-y-32 gap-x-12 max-w-4xl mx-auto justify-items-center">
+            <!-- FAQ Card 1 -->
+            <div class="faq-card reveal-card md:justify-self-end">
+                <div class="align">
+                    <span class="red-dot"></span>
+                    <span class="yellow-dot"></span>
+                    <span class="green-dot"></span>
+                </div>
+                <h1>How long does a website take?</h1>
+                <p>5–14 days depending on complexity.</p>
+            </div>
+
+            <!-- FAQ Card 2 -->
+            <div class="faq-card right-facing reveal-card md:justify-self-start md:mt-[-40px]">
+                <div class="align">
+                    <span class="red-dot"></span>
+                    <span class="yellow-dot"></span>
+                    <span class="green-dot"></span>
+                </div>
+                <h1>Do you offer maintenance?</h1>
+                <p>Yes, we provide ongoing maintenance and support.</p>
+            </div>
+
+            <!-- FAQ Card 3 -->
+            <div class="faq-card reveal-card md:justify-self-end">
+                <div class="align">
+                    <span class="red-dot"></span>
+                    <span class="yellow-dot"></span>
+                    <span class="green-dot"></span>
+                </div>
+                <h1>Do you provide domain and hosting?</h1>
+                <p>Yes, we can assist with domain registration and hosting setup.</p>
+            </div>
+
+            <!-- FAQ Card 4 -->
+            <div class="faq-card right-facing reveal-card md:justify-self-start md:mt-[-40px]">
+                <div class="align">
+                    <span class="red-dot"></span>
+                    <span class="yellow-dot"></span>
+                    <span class="green-dot"></span>
+                </div>
+                <h1>Can you create capstone systems?</h1>
+                <p>Yes, we specialize in developing custom capstone systems.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats min-h-screen px-6 md:px-[8%] py-20 md:py-[100px] flex items-center">
+        <div class="stats-grid grid grid-cols-2 lg:grid-cols-4 w-full text-center gap-12">
+            <div class="stat-item"><h2 class="counter text-5xl md:text-[4rem] font-bold text-white">50</h2><p class="text-sm md:text-base text-white/60">Projects Completed</p></div>
+            <div class="stat-item"><h2 class="counter text-5xl md:text-[4rem] font-bold text-white">30</h2><p class="text-sm md:text-base text-white/60">Satisfied Clients</p></div>
+            <div class="stat-item"><h2 class="text-5xl md:text-[4rem] font-bold text-white">100%</h2><p class="text-sm md:text-base text-white/60">Quality Commitment</p></div>
+            <div class="stat-item"><h2 class="text-5xl md:text-[4rem] font-bold text-white">24/7</h2><p class="text-sm md:text-base text-white/60">Support</p></div>
+        </div>
+    </section>
+
+    <section class="contact min-h-screen px-6 md:px-[8%] py-20 md:py-[100px] flex items-center" id="contact">
+        <div class="contact-container grid grid-cols-1 lg:grid-cols-2 gap-16 w-full">
+            <div>
+                <h2 class="text-4xl md:text-[3.5rem] mb-12 font-bold">Get In Touch</h2>
+                <div class="text-white/60 mb-8 space-y-3">
+                    <p class="flex items-center gap-3"><iconify-icon icon="ph:map-pin-fill" class="text-xl text-white"></iconify-icon> Palawan, Philippines</p>
+                    <p class="flex items-center gap-3"><iconify-icon icon="ph:phone-fill" class="text-xl text-white"></iconify-icon> +9929740280</p>
+                    <p class="flex items-center gap-3"><iconify-icon icon="ph:envelope-simple-fill" class="text-xl text-white"></iconify-icon> <a href="mailto:baydevelopers@gmail.com" class="hover:text-white transition-colors">baydevelopers@gmail.com</a></p>
+                    <p class="flex items-center gap-3"><iconify-icon icon="ph:facebook-logo-fill" class="text-xl text-white"></iconify-icon> Bay Developers Palawan</p>
+                </div>
+
+                <p class="text-white/60 text-sm italic mb-2 text-center md:text-left">For a faster response, message us on our socials:</p>
+                
+                <!-- 3D Social Buttons -->
+                <div class="social-container mb-12">
+                    <div class="social-child child-discord">
+                        <a href="https://discord.gg/VR3j367a" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="Join our Discord">
+                            <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M524.531,69.836a1.5,1.5,0,0,0-.764-.7A485.065,485.065,0,0,0,404.081,32.03a1.816,1.816,0,0,0-1.923.91,337.461,337.461,0,0,0-14.9,30.6,447.848,447.848,0,0,0-134.426,0,309.541,309.541,0,0,0-15.135-30.6,1.89,1.89,0,0,0-1.924-.91A483.689,483.689,0,0,0,116.085,69.137a1.712,1.712,0,0,0-.788.676C39.068,183.651,18.186,294.69,28.43,404.354a2.016,2.016,0,0,0,.765,1.375A487.666,487.666,0,0,0,176.02,479.918a1.9,1.9,0,0,0,2.063-.676A348.2,348.2,0,0,0,208.12,430.4a1.819,1.819,0,0,0-1.017-2.526,328.1,328.1,0,0,1-45.939-21.922,1.874,1.874,0,0,1-.184-3.127c3.135-2.343,6.27-4.784,9.257-7.248a1.791,1.791,0,0,1,1.875-.246C261.385,441.9,378.615,441.9,467.872,395.336a1.791,1.791,0,0,1,1.875.246c2.987,2.464,6.122,4.9,9.257,7.248a1.874,1.874,0,0,1-.184,3.127,330.21,330.21,0,0,1-45.939,21.922,1.819,1.819,0,0,0-1.017,2.526,350.7,350.7,0,0,0,30.037,48.842,1.908,1.908,0,0,0,2.063.676A486.555,486.555,0,0,0,610.7,405.729a1.882,1.882,0,0,0,.765-1.352C623.729,277.594,590.933,167.465,524.531,69.836ZM222.491,337.58c-28.972,0-52.844-26.587-52.844-59.239S193.056,219.1,222.491,219.1c29.665,0,53.306,26.82,52.843,59.239C275.334,310.993,251.924,337.58,222.491,337.58Zm195.38,0c-28.971,0-52.843-26.587-52.843-59.239S388.437,219.1,417.871,219.1c29.667,0,53.307,26.82,52.844,59.239C470.715,310.993,447.538,337.58,417.871,337.58Z"></path>
+                            </svg>
+                        </a>
                     </div>
-                    <div class="flex flex-col gap-6">
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest ml-1">Alert Type</label>
-                            <select id="alertType" class="bg-slate-950/50 border border-slate-800 text-white px-4 py-2.5 rounded-xl outline-none focus:border-red-500/50 transition-all w-full">
-                                <option value="text">Text Announcement</option>
-                                <option value="image">Image Overlay (URL)</option>
-                                <option value="video">Video Playback (URL)</option>
+                    <div class="social-child child-instagram">
+                        <a href="https://www.instagram.com/baydevpalawan/" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="Follow us on Instagram">
+                            <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="social-child child-whatsapp">
+                        <a href="https://wa.me/9929740280" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="Message us on WhatsApp">
+                            <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.1 0-65.6-8.9-94-25.7l-6.7-4-69.8 18.3 18.7-68.1-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.6-2.8-23.6-8.7-45-27.7-16.6-14.9-27.7-33.2-31-38.8-3.2-5.6-.3-8.6 2.5-11.4 2.5-2.5 5.5-6.5 8.3-9.7 2.8-3.2 3.7-5.5 5.6-9.2 1.9-3.7.9-7-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.5 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.5 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="social-child child-github">
+                        <a href="https://github.com/baydevolpersppc" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="View our GitHub">
+                            <svg viewBox="0 0 496 512" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="social-child child-facebook">
+                        <a href="https://web.facebook.com/profile.php?id=61590869843682" target="_blank" rel="noopener noreferrer" class="social-button" aria-label="Visit our Facebook">
+                            <svg viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="fade-up w-full p-8 md:p-12 bg-white/5 border border-white/10 rounded-[30px]">
+                <h3 class="text-3xl font-bold mb-8">Start your project now</h3>
+                    <form id="contactForm" class="relative z-10 space-y-5">
+                        <div class="relative">
+                            <iconify-icon icon="ph:user-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></iconify-icon>
+                            <input type="text" name="name" placeholder="Your Name" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                        </div>
+                        <div class="relative">
+                            <iconify-icon icon="ph:envelope-simple-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></iconify-icon>
+                            <input type="email" name="email" placeholder="Email Address" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                        </div>
+                        <div class="relative">
+                            <iconify-icon icon="ph:phone-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40"></iconify-icon>
+                            <input type="tel" name="phone" placeholder="Phone Number" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors">
+                        </div>
+                        <div class="relative">
+                            <iconify-icon icon="ph:briefcase-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"></iconify-icon>
+                            <select name="project_type" required class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors appearance-none">
+                                <option value="" disabled selected class="bg-[#050a0a]">Select Project Type</option>
+                                <option value="website" class="bg-[#050a0a]">Website Development</option>
+                                <option value="system" class="bg-[#050a0a]">Custom Web System</option>
+                                <option value="ecommerce" class="bg-[#050a0a]">E-Commerce</option>
+                                <option value="capstone" class="bg-[#050a0a]">Capstone / Academic</option>
+                                <option value="other" class="bg-[#050a0a]">Other</option>
                             </select>
+                            <iconify-icon icon="ph:caret-down-bold" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"></iconify-icon>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest ml-1">Media (Image or Video)</label>
-                            <div id="alertMediaDropzone" class="dropzone">
-                                <input type="file" id="alertFileInput" accept="image/*,video/*" class="hidden">
-                                <label for="alertFileInput" class="file-input-label">
-                                    <i data-lucide="upload-cloud" class="w-8 h-8 text-slate-400"></i>
-                                    <span class="text-sm font-bold text-slate-400">Drag & drop or click to upload</span>
-                                    <span class="text-xs text-slate-500">Max 5MB (JPG, PNG, GIF, MP4, WEBM)</span>
-                                </label>
-                            </div>
-                            <div id="alertMediaPreview" class="hidden mt-4 p-4 bg-slate-900/50 border border-slate-800 rounded-xl flex items-center justify-between gap-4">
-                                <div class="flex items-center gap-3">
-                                    <img id="alertPreviewImage" src="" class="hidden w-16 h-16 object-cover rounded-lg border border-slate-700">
-                                    <video id="alertPreviewVideo" src="" class="hidden w-16 h-16 object-cover rounded-lg border border-slate-700" muted loop></video>
-                                    <span id="alertFileName" class="text-sm text-white truncate max-w-[200px]"></span>
-                                </div>
-                                <button id="clearAlertMedia" class="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-2 rounded-lg transition-all active:scale-95"><i data-lucide="x" class="w-4 h-4"></i></button>
-                            </div>
-                            <div id="alertUploadProgress" class="hidden w-full bg-slate-700 rounded-full h-2.5 mt-2">
-                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
-                            </div>
+                        <div class="relative">
+                            <iconify-icon icon="ph:chat-centered-text-bold" class="absolute left-4 top-5 text-white/40"></iconify-icon>
+                            <textarea name="details" placeholder="Tell us more about the project requirements..." required rows="5" class="w-full pl-12 p-4 bg-white/5 border border-white/10 text-white rounded-xl outline-none focus:border-white transition-colors"></textarea>
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest ml-1">Announcement Text</label>
-                            <textarea id="alertMessage" placeholder="Enter your announcement details here..." class="bg-slate-950/50 border border-slate-800 text-white px-4 py-2.5 rounded-xl outline-none focus:border-red-500/50 transition-all w-full h-24 placeholder:text-slate-700"></textarea>
-                        </div>
-                        <div class="flex items-center gap-6">
-                            <div class="flex flex-col gap-2 flex-1">
-                                <label class="text-[0.65rem] font-black text-slate-500 uppercase tracking-widest ml-1">Duration (seconds)</label>
-                                <input type="number" id="alertDuration" value="10" min="0" class="bg-slate-950/50 border border-slate-800 text-white px-4 py-2.5 rounded-xl outline-none focus:border-red-500/50 w-full text-center font-black">
-                            </div>
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="alertStay" class="sr-only peer">
-                                <div class="relative w-11 h-6 bg-slate-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-red-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-red-600"></div>
-                                <span class="ml-3 text-sm font-medium text-slate-300">Stay Indefinitely</span>
-                            </label>
-                        </div>
-                        <div class="flex gap-4">
-                            <button class="flex-1 bg-red-600 hover:bg-red-500 text-white font-black h-[46px] px-8 rounded-xl transition-all flex items-center justify-center gap-2 active:scale-95 shadow-xl shadow-red-500/20 uppercase tracking-widest text-xs" onclick="activateGlobalAlert()">
-                                <i data-lucide="bell-ring" class="w-5 h-5"></i> Activate Alert
-                            </button>
-                            <button class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-black h-[46px] px-8 rounded-xl transition-all flex items-center justify-center gap-2 active:scale-95 shadow-xl shadow-black/20 uppercase tracking-widest text-xs" onclick="dismissGlobalAlert()">
-                                <i data-lucide="bell-off" class="w-5 h-5"></i> Dismiss Alert
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between mb-4 shrink-0 px-1">
-                <h2 class="text-sm font-black text-white uppercase tracking-[0.3em]">Active Terminals</h2>
-                <p class="text-[0.6rem] text-slate-500 font-bold uppercase tracking-widest">Drag cards to reorder Lobby TV priority</p>
-            </div>
-
-            <div class="operator-grid" id="desksWrapper"></div>
-            
-            <div class="system-footer flex flex-col sm:flex-row justify-center gap-4">
-                <button class="bg-red-500/10 text-red-500 border border-red-500/30 px-6 py-2 rounded-lg font-bold hover:bg-red-500 hover:text-white transition flex items-center gap-2 active:scale-95" onclick="resetSystem()"><i data-lucide="alert-triangle" class="w-4 h-4"></i> Factory Reset All Queues</button>
-                <button class="bg-red-600/10 text-red-600 border border-red-600/30 px-6 py-2 rounded-lg font-bold hover:bg-red-600 hover:text-white transition flex items-center gap-2 active:scale-95" onclick="deleteAllDesks()"><i data-lucide="trash-2" class="w-4 h-4"></i> Delete All Terminals</button>
+                        <button type="submit" class="w-full py-5 rounded-full font-bold bg-white text-black hover:scale-[1.02] transition-transform active:scale-95">Send Project Inquiry</button>
+                    </form>
             </div>
         </div>
-
-        <!-- OPERATOR VIEW -->
-        <div id="view-operator" class="hidden flex flex-col h-full overflow-y-auto pr-2 custom-scrollbar">
-            <button class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2 mb-6 w-fit active:scale-95" onclick="switchView('landing')"><i data-lucide="chevron-left" class="w-4 h-4"></i> Exit Session</button>
-            <div class="operator-focus" id="operatorFocusContainer"></div>
-        </div>
-        </main>
-    </div>
-
-    <script>
-    // 1. Initialize Supabase Client correctly via the CDN global object
-    const { createClient } = supabase;
-    
-    const SUPABASE_URL = 'https://rdrpmtcegulsylmbgtpd.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkcnBtdGNlZ3Vsc3lsbWJndHBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3NDk3MDcsImV4cCI6MjA5NzMyNTcwN30.VYFVqptKcsavxHDyOeW90VKYdcIFSOxXhTa9lW-Q2AE';
-    const _supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    let customerWindow = null;
-    let localDesksCache = []; 
-    let activeOperatorDeskId = null;
-    let globalAlertState = null; // Stores the current alert configuration
-    let alertDismissTimer = null; // Timer for auto-dismissing alerts
-    let globalTickerText = "";
-    const colorPresets = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ec4899', '#06b6d4', '#ef4444', '#14b8a6', '#6366f1'];
-
-    // Theme Logic Initialization
-    function initTheme() {
-        const themeToggle = document.getElementById('toggle');
-        const savedTheme = localStorage.getItem('theme');
-        
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-mode');
-            themeToggle.checked = false;
-        } else {
-            themeToggle.checked = true;
-        }
-
-        themeToggle.addEventListener('change', () => {
-            if (themeToggle.checked) {
-                document.body.classList.remove('light-mode');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                document.body.classList.add('light-mode');
-                localStorage.setItem('theme', 'light');
-            }
-        });
-    }
-
-    function pad(n, limit) { 
-        const limitLen = limit ? limit.toString().length : 3;
-        return n.toString().padStart(Math.max(3, limitLen), '0'); 
-    }
-
-    function getNextUniqueColor() {
-        const usedColors = localDesksCache.map(d => d.color.toLowerCase());
-        for (let color of colorPresets) {
-            if (!usedColors.includes(color.toLowerCase())) return color;
-        }
-        return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-    }
-
-    function updateColorPickerDefault() {
-        const picker = document.getElementById('newDeptColor');
-        if(picker) picker.value = getNextUniqueColor();
-    }
-
-    function switchView(viewId, deskId = null) {
-        const homeBtn = document.getElementById('btn-portal-home');
-        if(homeBtn) homeBtn.style.display = viewId === 'portal' ? 'none' : 'flex';
-
-        // Using Tailwind hidden class
-        document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
-        document.getElementById(`view-${viewId}`).classList.remove('hidden');
-
-        if (viewId === 'operator' && deskId) {
-            activeOperatorDeskId = deskId;
-            renderOperatorDashboard();
-        } else {
-            activeOperatorDeskId = null;
-        }
-        
-        // Refresh state when switching views to ensure latest data
-        loadSystemState();
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-    function handleAdminLogin() {
-        const pin = document.getElementById('adminPin').value;
-        // Simple demonstration PIN - in production this would be handled via Supabase Auth
-        if (pin === '1234') { 
-            document.getElementById('adminPin').value = '';
-            switchView('admin'); 
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Access Denied',
-                text: 'Invalid Access PIN.',
-                background: 'var(--bg-card)',
-                color: 'var(--text-main)',
-                confirmButtonColor: 'var(--accent-blue)'
-            });
-        }
-    }
-
-    // 2. Core Supabase Data Synchronization Engine
-    async function loadSystemState(activeKey = null) {
-        const { data, error } = await _supabaseClient
-            .from('desks')
-            .select('*')
-            .order('display_order', { ascending: true });
-
-        if (error) {
-            console.error("Error retrieving live terminals configuration:", error);
-            return;
-        }
-
-        localDesksCache = data;
-        
-        // If this update was triggered by a specific desk action (Next/Prev/Recall)
-        if (activeKey) {
-            const updatedDesk = localDesksCache.find(d => d.key_identifier === activeKey);
-            if (updatedDesk) {
-                playNotificationSound();
-                announceAudio(updatedDesk.name, updatedDesk.prefix, updatedDesk.serving_number, updatedDesk.max_loop_limit);
-            }
-        }
-
-        // Fetch Global Notification from settings table
-        const { data: configData, error: configError } = await _supabaseClient.from('settings').select('*').eq('key', 'lobby_ticker').maybeSingle();
-        if (!configError && configData) {
-            globalTickerText = configData.value;
-            // Only update the input if it's not currently being edited
-            const input = document.getElementById('globalNotification');
-            if (input && document.activeElement !== input) input.value = globalTickerText;
-        }
-        // Fetch Global Alert from settings table
-        const { data: alertData, error: alertError } = await _supabaseClient.from('settings').select('*').eq('key', 'lobby_alert').maybeSingle();
-        if (!alertError && alertData && alertData.value) {
-            globalAlertState = JSON.parse(alertData.value);
-        } else {
-            globalAlertState = null;
-        }
-
-        // Re-render based on current view
-        if (!document.getElementById('view-landing').classList.contains('hidden')) renderLandingGrid();
-        if (!document.getElementById('view-admin').classList.contains('hidden')) renderDesksDashboard();
-        if (!document.getElementById('view-operator').classList.contains('hidden') && activeOperatorDeskId) {
-            renderOperatorDashboard();
-        }
-
-        updateCustomerWindowUI(activeKey);
-        updateAdminAlertUI(); // Update admin panel alert inputs
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-
-        // Hide initial loader once first data fetch is complete
-        const loader = document.getElementById('loading-screen');
-        if (loader) loader.classList.add('hidden-loader');
-    }
-
-    function initRealtimeSync() {
-        let debounceTimer;
-        let pendingTicketUpdateKey = null;
-
-        _supabaseClient
-            .channel('public:desks')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'desks' }, (payload) => {
-                if (payload.new) {
-                    // Use payload.old for comparison to accurately detect changes from the database perspective.
-                    // This avoids issues if localDesksCache is slightly out of sync or updated by another event.
-                    const oldServingNumber = payload.old ? payload.old.serving_number : null;
-                    const newServingNumber = payload.new.serving_number;
-
-                    const numChanged = oldServingNumber !== newServingNumber;
-                    const isRecall = !numChanged && payload.old !== null; // If number didn't change, but it's an update event, it's a recall.
-                    
-                    if (numChanged || isRecall) {
-                        pendingTicketUpdateKey = payload.new.key_identifier;
-                    }
-                }
-
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(() => {
-                    const keyToUse = pendingTicketUpdateKey;
-                    pendingTicketUpdateKey = null;
-                    loadSystemState(keyToUse);
-                }, 200);
-            })
-            .subscribe();
-
-        _supabaseClient
-            .channel('public:settings')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'settings' }, () => {
-                loadSystemState();
-                // No need to call renderGlobalAlertsUI() here, loadSystemState already does it.
-            })
-            .subscribe();
-    }
-
-    async function updateGlobalNotification() {
-        const text = document.getElementById('globalNotification').value.trim();
-        const { error } = await _supabaseClient
-            .from('settings')
-            .upsert({ key: 'lobby_ticker', value: text }, { onConflict: 'key' });
-
-        if (error) {
-            console.error("Broadcast Error:", error);
-            let msg = error.message;
-            if (msg.includes("not found")) msg = "The 'settings' table is missing. Please run the SQL setup in your Supabase dashboard.";
-            
-            Swal.fire({ icon: 'error', title: 'Update Failed', text: msg, background: 'var(--bg-card)', color: 'var(--text-main)' });
-        } else {
-            Swal.fire({
-                icon: 'success', title: 'Broadcast Updated', toast: true, position: 'top-end', timer: 3000, showConfirmButton: false, background: '#0f172a', color: '#fff'
-            });
-            loadSystemState();
-        }
-    }
-
-    async function resetGlobalNotification() {
-        document.getElementById('globalNotification').value = '';
-        await updateGlobalNotification();
-    }
-
-    async function activateGlobalAlert() {
-        const message = document.getElementById('alertMessage').value; // Allow empty string for message
-        const type = document.getElementById('alertType').value;
-        const duration = parseInt(document.getElementById('alertDuration').value);
-        const stayIndefinitely = document.getElementById('alertStay').checked;
-        
-        let mediaUrlToSave = '';
-        if (selectedAlertFile) {
-            mediaUrlToSave = await uploadAlertMedia(selectedAlertFile);
-            if (!mediaUrlToSave) return; // Upload failed
-        } else if (globalAlertState && globalAlertState.active && globalAlertState.mediaUrl && !document.getElementById('alertMediaPreview').classList.contains('hidden')) {
-            mediaUrlToSave = globalAlertState.mediaUrl; // Keep existing media if not replaced
-        }
-
-        if (!message && !mediaUrlToSave) {
-            return Swal.fire({ icon: 'info', title: 'Empty Alert', text: 'Please enter an announcement text or upload media.', background: 'var(--bg-card)', color: 'var(--text-main)' });
-        }
-
-        const alertConfig = {
-            type: type,
-            content: message,
-            mediaUrl: mediaUrlToSave,
-            duration: stayIndefinitely ? 0 : (duration > 0 ? duration : 10), // 0 for indefinite, default 10s
-            active: true,
-            timestamp: Date.now() // To ensure a unique update for real-time
-        };
-
-        const { error } = await _supabaseClient
-            .from('settings')
-            .upsert({ key: 'lobby_alert', value: JSON.stringify(alertConfig) }, { onConflict: 'key' });
-
-        if (error) {
-            console.error("Alert Activation Error:", error);
-            Swal.fire({ icon: 'error', title: 'Activation Failed', text: error.message, background: 'var(--bg-card)', color: 'var(--text-main)' });
-        } else {
-            Swal.fire({ icon: 'success', title: 'Alert Activated', toast: true, position: 'top-end', timer: 3000, showConfirmButton: false, background: '#0f172a', color: '#fff' });
-            // loadSystemState will be triggered by the realtime listener
-        }
-        // Clear selected file after activation
-        clearMediaSelection();
-        document.getElementById('alertMessage').value = '';
-        document.getElementById('alertDuration').value = '10';
-    }
-
-    async function dismissGlobalAlert() {
-        const { error } = await _supabaseClient
-            .from('settings')
-            .upsert({ key: 'lobby_alert', value: JSON.stringify({ active: false }) }, { onConflict: 'key' });
-
-        if (error) {
-            console.error("Alert Dismissal Error:", error);
-            Swal.fire({ icon: 'error', title: 'Dismissal Failed', text: error.message, background: 'var(--bg-card)', color: 'var(--text-main)' });
-        } else {
-            Swal.fire({ icon: 'info', title: 'Alert Dismissed', toast: true, position: 'top-end', timer: 3000, showConfirmButton: false, background: '#0f172a', color: '#fff' });
-            // loadSystemState will be triggered by the realtime listener
-        }
-    }
-
-    let selectedAlertFile = null;
-
-    async function uploadAlertMedia(file) {
-        const progressDiv = document.getElementById('alertUploadProgress');
-        const progressBar = progressDiv.querySelector('div');
-        progressDiv.classList.remove('hidden');
-        progressBar.style.width = '0%';
-
-        const fileExtension = file.name.split('.').pop();
-        const filePath = `alert_media/${Date.now()}_${Math.random().toString(36).substring(2, 15)}.${fileExtension}`;
-
-        try {
-            const { data, error } = await _supabaseClient.storage
-                .from('alert_media')
-                .upload(filePath, file, {
-                    cacheControl: '3600',
-                    upsert: false,
-                    onUploadProgress: (event) => {
-                        const percent = Math.round((event.loaded / event.total) * 100);
-                        progressBar.style.width = `${percent}%`;
-                    }
-                });
-
-            if (error) throw error;
-
-            const { data: publicUrlData } = _supabaseClient.storage.from('alert_media').getPublicUrl(filePath);
-            return publicUrlData.publicUrl;
-        } catch (error) {
-            console.error('Error uploading file:', error);
-            let displayMsg = error.message;
-            if (displayMsg.toLowerCase().includes("bucket not found")) {
-                displayMsg = "The storage bucket 'alert_media' does not exist. Please create it in your Supabase dashboard under Storage and make it 'Public'.";
-            }
-            Swal.fire({ icon: 'error', title: 'Upload Failed', text: displayMsg, background: 'var(--bg-card)', color: 'var(--text-main)' });
-            progressDiv.classList.add('hidden');
-            return null;
-        }
-    }
-
-    function handleFileSelection(file) {
-        if (!file) {
-            clearMediaSelection();
-            return;
-        }
-
-        if (file.size > 5 * 1024 * 1024) { // Max 5MB
-            Swal.fire({ icon: 'error', title: 'File Too Large', text: 'Please upload a file smaller than 5MB.', background: 'var(--bg-card)', color: 'var(--text-main)' });
-            clearMediaSelection();
-            return;
-        }
-
-        const fileType = file.type.split('/')[0];
-        if (fileType !== 'image' && fileType !== 'video') {
-            Swal.fire({ icon: 'error', title: 'Invalid File Type', text: 'Only image (JPG, PNG, GIF) or video (MP4, WEBM) files are allowed.', background: 'var(--bg-card)', color: 'var(--text-main)' });
-            clearMediaSelection();
-            return;
-        }
-
-        selectedAlertFile = file;
-        const previewDiv = document.getElementById('alertMediaPreview');
-        const previewImage = document.getElementById('alertPreviewImage');
-        const previewVideo = document.getElementById('alertPreviewVideo');
-        const fileNameSpan = document.getElementById('alertFileName');
-
-        fileNameSpan.innerText = file.name;
-        previewImage.classList.add('hidden');
-        previewVideo.classList.add('hidden');
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            if (fileType === 'image') {
-                previewImage.src = e.target.result;
-                previewImage.classList.remove('hidden');
-            } else if (fileType === 'video') {
-                previewVideo.src = e.target.result;
-                previewVideo.classList.remove('hidden');
-                previewVideo.load(); // Ensure video loads for preview
-            }
-            previewDiv.classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function clearMediaSelection() {
-        selectedAlertFile = null;
-        document.getElementById('alertFileInput').value = ''; // Clear file input
-        document.getElementById('alertMediaPreview').classList.add('hidden');
-        document.getElementById('alertPreviewImage').src = '';
-        document.getElementById('alertPreviewVideo').src = '';
-        document.getElementById('alertFileName').innerText = '';
-        document.getElementById('alertUploadProgress').classList.add('hidden');
-        document.getElementById('alertUploadProgress').querySelector('div').style.width = '0%';
-    }
-
-    function updateAdminAlertUI() {
-        // If an alert is active with media, show its preview in the admin panel
-            if (globalAlertState && globalAlertState.active && (globalAlertState.mediaUrl || globalAlertState.content)) {
-            const previewDiv = document.getElementById('alertMediaPreview');
-            const previewImage = document.getElementById('alertPreviewImage');
-            const previewVideo = document.getElementById('alertPreviewVideo');
-            const fileNameSpan = document.getElementById('alertFileName');
-
-                if (globalAlertState.mediaUrl) {
-                    fileNameSpan.innerText = globalAlertState.mediaUrl.split('/').pop();
-                    if (globalAlertState.type === 'video') { previewVideo.src = globalAlertState.mediaUrl; previewVideo.classList.remove('hidden'); }
-                    else { previewImage.src = globalAlertState.mediaUrl; previewImage.classList.remove('hidden'); }
-                    previewDiv.classList.remove('hidden');
-                }
-        } else {
-            clearMediaSelection();
-        }
-    }
-
-    // 3. UI Template Composition Modules
-    function renderLandingGrid() {
-        const grid = document.getElementById('landingDesks');
-        if (!grid) return;
-        grid.innerHTML = '';
-
-        if (localDesksCache.length === 0) {
-            grid.innerHTML = `
-                <div class="col-span-full text-center py-16">
-                    <i data-lucide="monitor-off" class="w-24 h-24 text-slate-600 mx-auto mb-6"></i>
-                    <h3 class="text-2xl font-bold text-slate-400 mb-2">No Terminals Configured</h3>
-                    <p class="text-slate-500 max-w-md mx-auto">It looks like you haven't added any operator terminals yet. Please go to the <span class="text-blue-400 font-semibold">System Administration</span> section to provision new terminals.</p>
-                </div>
-            `;
-            lucide.createIcons(); // Ensure the icon renders
-            return;
-        }
-
-        localDesksCache.forEach((d) => {
-            const color = d.color || '#3b82f6';
-            grid.innerHTML += `
-                <div class="panel-card group cursor-pointer active:scale-95" style="border-top: 6px solid ${color};" onclick="switchView('operator', '${d.id}')">
-                    <div class="flex flex-col items-center">
-                        <h3 class="text-xl md:text-2xl font-bold mb-2 text-white group-hover:text-blue-400 transition">${d.name}</h3>
-                        <span class="dept-badge" style="background: ${color}33; color: ${color};">Select Counter</span>
-                    </div>
-                    <div class="text-7xl font-black my-8 tracking-tighter" style="color: ${color}">${d.prefix}</div>
-                    <div>
-                        <button class="w-full flex justify-center py-4 font-black rounded-xl transition-all group-hover:scale-[1.02] shadow-xl shadow-black/20 uppercase tracking-widest text-sm hover:brightness-110 active:scale-95" style="background: ${color}; color: white;">
-                            Enter Terminal
-                        </button>
-                    </div>
-                </div>
-            `;
-        });
-    }
-
-    function renderDesksDashboard() {
-        const wrapper = document.getElementById('desksWrapper');
-        if (!wrapper) return;
-        wrapper.innerHTML = '';
-
-        // Update Dashboard Stats
-        const totalDesksNode = document.getElementById('stat-total-desks');
-        const totalServingNode = document.getElementById('stat-total-serving');
-        if (totalDesksNode) totalDesksNode.innerText = localDesksCache.length;
-        if (totalServingNode) {
-            const totalServed = localDesksCache.reduce((sum, d) => sum + (d.serving_number || 0), 0);
-            totalServingNode.innerText = totalServed;
-        }
-
-        localDesksCache.forEach((d, idx) => {
-            const displayNum = `${d.prefix}-${pad(d.serving_number, d.max_loop_limit)}`;
-            const color = d.color || '#3b82f6';
-
-            wrapper.innerHTML += `
-                <div class="panel-card group/card !bg-slate-900/30 backdrop-blur-sm shadow-xl" style="border-top: 5px solid ${color}"
-                     draggable="true" 
-                     ondragstart="drag(event, '${d.key_identifier}')" 
-                     ondragover="allowDrop(event)" 
-                     ondragleave="dragLeave(event)"
-                     ondrop="drop(event, '${d.key_identifier}')">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="drag-handle !m-0 !p-0 opacity-30 group-hover/card:opacity-100 transition-opacity cursor-grab active:cursor-grabbing" title="Drag to reorder terminal priority">
-                            <i data-lucide="grip-horizontal" class="w-5 h-5"></i>
-                        </div>
-                        <button class="w-8 h-8 rounded-lg flex items-center justify-center bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all active:scale-90" onclick="removeDesk('${d.id}')" title="Decommission Terminal">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-
-                    <div class="text-center">
-                        <div class="text-[0.6rem] font-black text-slate-500 uppercase tracking-widest mb-1 flex items-center justify-center gap-1.5"><i data-lucide="monitor" class="w-3 h-3"></i> Terminal Station ${idx + 1}</div>
-                        <h3 class="text-lg font-black text-white truncate px-2 mb-4">${d.name}</h3>
-                        <div class="text-4xl font-black tabular-nums tracking-tighter" style="color: ${color}; filter: drop-shadow(0 0 10px ${color}33);">
-                            ${displayNum}
-                        </div>
-                    </div>
-                    
-                    <div class="mt-4 space-y-3">
-                        <div class="grid grid-cols-2 gap-2">
-                            <button class="bg-emerald-600/10 hover:bg-emerald-600 text-emerald-500 hover:text-white py-2.5 rounded-xl font-black text-[0.65rem] transition-all active:scale-95 flex items-center justify-center gap-2 border border-emerald-500/20 uppercase tracking-widest" onclick="serveNext('${d.id}', '${d.key_identifier}', '${d.prefix}', ${d.serving_number}, ${d.max_loop_limit})">
-                                Next <i data-lucide="skip-forward" class="w-3.5 h-3.5"></i>
-                            </button>
-                            <button class="bg-indigo-600/10 hover:bg-indigo-600 text-indigo-500 hover:text-white py-2.5 rounded-xl font-black text-[0.65rem] transition-all active:scale-95 flex items-center justify-center gap-2 border border-indigo-500/20 uppercase tracking-widest" onclick="reCall('${d.key_identifier}', '${d.prefix}', ${d.serving_number}, ${d.max_loop_limit})">
-                                <i data-lucide="megaphone" class="w-3.5 h-3.5"></i> Recall
-                            </button>
-                        </div>
-
-                        <div class="bg-black/40 p-4 rounded-2xl border border-white/5 space-y-3 shadow-inner">
-                            <div class="flex items-center justify-between text-[0.6rem] font-black uppercase tracking-widest text-slate-500">
-                                <span class="flex items-center gap-1.5"><i data-lucide="rotate-cw" class="w-3 h-3"></i> Loop Threshold</span>
-                                <input type="number" class="w-14 bg-slate-950 border border-slate-800 text-white text-center font-bold rounded-lg py-1 outline-none focus:border-blue-500/50 transition-colors" value="${d.max_loop_limit}" onchange="updateDeskLimit('${d.id}', this.value)">
-                            </div>
-                            <button class="w-full bg-slate-100/5 hover:bg-slate-100/10 text-slate-300 py-2.5 rounded-xl font-black text-[0.65rem] transition-all uppercase tracking-widest flex items-center justify-center gap-2 border border-white/5 active:scale-95" onclick="batchPrintTickets('${d.key_identifier}')">
-                                <i data-lucide="printer" class="w-3.5 h-3.5 text-blue-500"></i> Print Tickets
-                            </button>
-                        </div>
-                    </div>
-                </div>`;
-        });
-        updateColorPickerDefault();
-    }
-
-    function renderOperatorDashboard() {
-        const container = document.getElementById('operatorFocusContainer');
-        const d = localDesksCache.find(desk => desk.id === activeOperatorDeskId);
-        if (!container || !d) return;
-
-        const displayNum = `${d.prefix}-${pad(d.serving_number, d.max_loop_limit)}`;
-        const color = d.color || '#3b82f6';
-
-        container.innerHTML = `
-            <div class="panel-card !h-auto min-h-full flex flex-col p-6 md:p-12 !text-left !bg-slate-900/20 backdrop-blur-3xl" style="border-top: 10px solid ${color}">
-                <div class="flex flex-col h-full space-y-6 md:space-y-8">
-                    <!-- Header: Title and Status -->
-                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between shrink-0 gap-4">
-                        <div class="flex items-center gap-4 md:gap-6">
-                            <div class="w-12 h-12 md:w-16 md:h-16 rounded-[1rem] md:rounded-[1.2rem] bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                                <i data-lucide="user" class="w-6 h-6 md:w-8 md:h-8" style="color: ${color}"></i>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="relative flex h-3 w-3">
-                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                                    </span>
-                                    <span class="text-xs font-black text-slate-400 uppercase tracking-widest">Terminal Live</span>
-                                </div>
-                                <h2 class="text-xl md:text-4xl font-black text-white tracking-tight uppercase">${d.name}</h2>
-                            </div>
-                        </div>
-                        <div class="px-4 md:px-6 py-2 md:py-3 bg-white/5 border border-white/10 rounded-xl md:rounded-2xl flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
-                            <div class="text-right">
-                                <span class="text-[0.65rem] font-black text-slate-500 uppercase tracking-[0.3em] block mb-1">Station Prefix</span>
-                                <div class="text-2xl md:text-3xl font-black italic leading-none" style="color: ${color}">${d.prefix}</div>
-                            </div>
-                            <i data-lucide="hash" class="w-8 h-8 text-slate-700"></i>
-                        </div>
-                    </div>
-                
-                    <!-- Main Content: Landscape Grid -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 flex-1 min-h-0">
-                        <!-- Left Side: Ticket Hero -->
-                        <div class="relative bg-black/30 backdrop-blur-xl border border-white/5 rounded-3xl md:rounded-[3.5rem] flex flex-col items-center justify-center p-6 md:p-10 shadow-2xl overflow-hidden group">
-                            <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full blur-[120px] opacity-25" style="background-color: ${color}"></div>
-                            <img src="LOGOSTI.png" class="absolute top-10 left-1/2 -translate-x-1/2 h-24 md:h-40 opacity-10 grayscale invert pointer-events-none" alt="">
-
-                            <div class="relative z-10 text-center">
-                                <span class="text-sm font-black tracking-[0.6em] text-slate-500 uppercase mb-4 block">Currently Serving</span>
-                                <div class="text-[clamp(6rem,30vw,20rem)] font-black leading-none tracking-tighter select-none" style="color: ${color}; filter: drop-shadow(0 0 60px ${color}44);">
-                                    ${pad(d.serving_number, d.max_loop_limit)}
-                                </div>
-                                <div class="mt-8 inline-flex items-center gap-4 px-10 py-4 bg-white/5 rounded-full border border-white/10">
-                                    <span class="text-2xl font-black text-slate-200 tracking-[0.2em] uppercase">${d.prefix}-${pad(d.serving_number, d.max_loop_limit)}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right Side: Controls -->
-                        <div class="flex flex-col gap-6 md:gap-8">
-                            <div class="flex-1 grid grid-rows-2 gap-6 md:gap-8">
-                                <!-- Call Next (Primary Action) -->
-                                <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-3xl md:rounded-[3rem] transition-all active:scale-95 shadow-2xl shadow-emerald-900/40 flex flex-col items-center justify-center gap-2 md:gap-4 group/btn p-6" 
-                                        onclick="serveNext('${d.id}', '${d.key_identifier}', '${d.prefix}', ${d.serving_number}, ${d.max_loop_limit})">
-                                    <span class="text-3xl md:text-5xl lg:text-6xl group-hover/btn:scale-105 transition flex items-center gap-4 md:gap-6">CALL NEXT <i data-lucide="skip-forward" class="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16"></i></span>
-                                    <span class="text-sm font-bold opacity-60 tracking-[0.4em] uppercase">Advance Queue</span>
-                                </button>
-                                
-                                <div class="grid grid-cols-2 gap-4 md:gap-8">
-                                    <button class="bg-slate-800 hover:bg-slate-700 text-white font-black text-xl md:text-3xl rounded-3xl md:rounded-[3rem] transition-all active:scale-95 shadow-xl flex items-center justify-center gap-2 md:gap-4 p-4" 
-                                            onclick="servePrevious('${d.id}', '${d.key_identifier}', '${d.prefix}', ${d.serving_number}, ${d.max_loop_limit})">
-                                        <i data-lucide="skip-back" class="w-5 h-5 md:w-8 md:h-8"></i> PREV
-                                    </button>
-                                    <button class="bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xl md:text-3xl rounded-3xl md:rounded-[3rem] transition-all active:scale-95 shadow-xl flex items-center justify-center gap-2 md:gap-4 p-4" 
-                                            onclick="reCall('${d.key_identifier}', '${d.prefix}', ${d.serving_number}, ${d.max_loop_limit})">
-                                        <i data-lucide="megaphone" class="w-5 h-5 md:w-8 md:h-8"></i> RE-CALL
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Management Bar -->
-                            <div class="bg-black/20 backdrop-blur-xl border border-white/5 rounded-3xl md:rounded-[3rem] p-6 md:p-8 flex flex-col justify-between space-y-4 md:space-y-6">
-                                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                                    <span class="text-[0.7rem] font-black text-slate-500 uppercase tracking-[0.3em] flex items-center gap-2"><i data-lucide="settings-2" class="w-4 h-4 text-slate-400"></i> System Configuration</span>
-                                    <button onclick="batchPrintTickets('${d.key_identifier}')" class="bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white px-6 py-2.5 rounded-xl text-[0.7rem] font-black transition uppercase tracking-widest flex items-center gap-2"><i data-lucide="printer" class="w-4 h-4"></i> Batch Print Tickets</button>
-                                </div>
-                                
-                                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 md:gap-10">
-                                    <div class="flex-1 bg-black/40 rounded-2xl p-4 md:p-5 border border-white/5 flex items-center justify-between">
-                                        <span class="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2"><i data-lucide="rotate-cw" class="w-4 h-4"></i> Max Loop Limit</span>
-                                        <input type="number" class="w-24 bg-slate-950 border border-slate-800 text-white text-center font-black py-2 rounded-xl outline-none focus:border-blue-500 transition-colors text-xl" 
-                                            min="1" value="${d.max_loop_limit}" onchange="updateDeskLimit('${d.id}', this.value)">
-                                    </div>
-                                    
-                                    <button class="h-full px-8 py-3 md:py-5 rounded-2xl border border-red-500/20 bg-red-500/5 text-red-500 font-black hover:bg-red-500 hover:text-white transition-all text-xs uppercase tracking-[0.2em] flex items-center gap-2 justify-center" 
-                                            onclick="resetDeskQueue('${d.id}')">
-                                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> Reset Station
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-
-    // 4. Mutation Operations (Writing to Supabase)
-    async function addNewDesk() {
-        const name = document.getElementById('newDeptName').value.trim();
-        const prefix = document.getElementById('newDeptPrefix').value.trim().toUpperCase();
-        const color = document.getElementById('newDeptColor').value;
-
-        if (localDesksCache.length >= 9) {
-            return Swal.fire({
-                icon: 'warning',
-                title: 'Limit Reached',
-                text: 'The system is optimized for a maximum of 9 terminals to ensure legibility on the Lobby TV.',
-                background: 'var(--bg-card)',
-                color: 'var(--text-main)'
-            });
-        }
-
-        if(!name || !prefix) {
-            return Swal.fire({
-                icon: 'info',
-                title: 'Missing Information',
-                text: 'Please provide both a Name and a Prefix.',
-                background: 'var(--bg-card)',
-                color: 'var(--text-main)'
-            });
-        }
-        
-        const uniqueKey = 'desk_' + Date.now();
-        const nextOrder = localDesksCache.length > 0 ? Math.max(...localDesksCache.map(d => d.display_order || 0)) + 1 : 1;
-
-        const { error } = await _supabaseClient
-            .from('desks')
-            .insert([{
-                key_identifier: uniqueKey,
-                name: name,
-                prefix: prefix,
-                color: color,
-                current_number: 1,
-                serving_number: 1,
-                max_loop_limit: 100,
-                display_order: nextOrder
-            }]);
-
-        if (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Save Failed',
-                text: error.message,
-                background: 'var(--bg-card)',
-                color: 'var(--text-main)'
-            });
-            return;
-        }
-
-        // Explicitly refresh UI after successful add
-        loadSystemState();
-        document.getElementById('newDeptName').value = ''; 
-        document.getElementById('newDeptPrefix').value = '';
-    }
-
-    async function removeDesk(dbId) {
-        const { isConfirmed } = await Swal.fire({
-            title: 'Delete Terminal?',
-            text: "This action cannot be undone.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ef4444',
-            cancelButtonColor: '#475569',
-            confirmButtonText: 'Yes, delete it',
-            background: 'var(--bg-card)',
-            color: 'var(--text-main)'
-        });
-
-        if (isConfirmed) {
-            const { error } = await _supabaseClient
-                .from('desks')
-                .delete()
-                .eq('id', dbId);
-
-            if (error) Swal.fire('Error', error.message, 'error');
-            else loadSystemState();
-        }
-    }
-
-    async function updateDeskLimit(dbId, val) {
-        let num = parseInt(val) || 100;
-        const { error } = await _supabaseClient
-            .from('desks')
-            .update({ max_loop_limit: num })
-            .eq('id', dbId);
-
-        if (error) console.error("Error adjusting processing bounds:", error);
-        else loadSystemState();
-    }
-
-    async function serveNext(dbId, keyIdentifier, prefix, currentServing, limit) {
-        let next = currentServing + 1;
-        if(next > limit) next = 1;
-
-        const { error } = await _supabaseClient
-            .from('desks')
-            .update({ serving_number: next, current_number: next })
-            .eq('id', dbId);
-
-        if (error) console.error("Database Update Failed:", error);
-    }
-
-    async function servePrevious(dbId, keyIdentifier, prefix, currentServing, limit) {
-        let prev = currentServing - 1;
-        if(prev < 1) prev = limit;
-
-        const { error } = await _supabaseClient
-            .from('desks')
-            .update({ serving_number: prev, current_number: prev })
-            .eq('id', dbId);
-
-        if (error) console.error("Database Update Failed:", error);
-    }
-
-    async function reCall(keyIdentifier, prefix, servingNum, limit) {
-        // To trigger a real-time update for all users on a "Recall", 
-        // we must perform a database update so Supabase broadcasts the change.
-        const desk = localDesksCache.find(d => d.key_identifier === keyIdentifier);
-        if (!desk) return;
-
-        const { error } = await _supabaseClient
-            .from('desks')
-            .update({ serving_number: servingNum }) // Re-updating the same number triggers the real-time event
-            .eq('id', desk.id);
-
-        if (error) console.error("Recall broadcast failed:", error);
-    }
-
-    async function resetDeskQueue(dbId) {
-        const { isConfirmed } = await Swal.fire({
-            title: 'Reset Counter?',
-            text: "Reset this terminal back to 001?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: 'var(--accent-blue)',
-            cancelButtonColor: '#475569',
-            background: 'var(--bg-card)',
-            color: 'var(--text-main)'
-        });
-
-        if (isConfirmed) {
-            const { error } = await _supabaseClient
-                .from('desks')
-                .update({ serving_number: 1, current_number: 1 })
-                .eq('id', dbId);
-
-            if (error) console.error("Error resetting queue boundaries:", error);
-            else loadSystemState();
-        }
-    }
-
-    async function confirmWithPin(title, text) {
-        const { value: pin } = await Swal.fire({
-            title: title,
-            text: text,
-            input: 'password',
-            inputPlaceholder: 'Enter Admin PIN',
-            inputAttributes: { maxlength: 4, autocapitalize: 'off', autocorrect: 'off' },
-            showCancelButton: true,
-            confirmButtonColor: '#ef4444',
-            cancelButtonColor: '#475569',
-            background: 'var(--bg-card)',
-            color: 'var(--text-main)'
-        });
-
-        if (pin === '1234') return true;
-        if (pin) Swal.fire({ icon: 'error', title: 'Invalid PIN', background: 'var(--bg-card)', color: 'var(--text-main)' });
-        return false;
-    }
-
-    async function resetSystem() {
-        if (await confirmWithPin('Reset All Queues', 'This will set every active terminal back to number 001.')) {
-            // Optimized: Single bulk update for all desks instead of looping
-            const { error } = await _supabaseClient
-                .from('desks')
-                .update({ current_number: 1, serving_number: 1 })
-                .not('id', 'is', null); 
-
-            if (error) {
-                Swal.fire({ icon: 'error', title: 'Reset Failed', text: error.message, background: 'var(--bg-card)', color: 'var(--text-main)' });
-            } else {
-                Swal.fire({ icon: 'success', title: 'Queues Reset', background: 'var(--bg-card)', color: 'var(--text-main)' });
-                loadSystemState();
-            }
-        }
-    }
-
-    async function deleteAllDesks() {
-        if (await confirmWithPin('Delete All Terminals', 'DANGER: This will permanently remove all counters from the system database.')) {
-            const { error } = await _supabaseClient
-                .from('desks')
-                .delete()
-                .not('id', 'is', null);
-
-            if (error) {
-                Swal.fire({ icon: 'error', title: 'Deletion Failed', text: error.message, background: 'var(--bg-card)', color: 'var(--text-main)' });
-            } else {
-                Swal.fire({ icon: 'success', title: 'System Wiped', background: 'var(--bg-card)', color: 'var(--text-main)' });
-                loadSystemState();
-            }
-        }
-    }
-
-    // 5. Drag and Drop Layout Management
-    let draggedDeskKey = null;
-    function drag(ev, keyIdentifier) { draggedDeskKey = keyIdentifier; ev.dataTransfer.effectAllowed = "move"; }
-    function allowDrop(ev) { ev.preventDefault(); const targetCard = ev.target.closest('.panel-card'); if (targetCard) targetCard.classList.add('drag-over'); }
-    function dragLeave(ev) { const targetCard = ev.target.closest('.panel-card'); if (targetCard) targetCard.classList.remove('drag-over'); }
-    
-    async function drop(ev, targetKeyIdentifier) {
-        ev.preventDefault();
-        const targetCard = ev.target.closest('.panel-card');
-        if (targetCard) targetCard.classList.remove('drag-over');
-
-        if (draggedDeskKey && draggedDeskKey !== targetKeyIdentifier) {
-            let workingArray = [...localDesksCache];
-            const draggedIdx = workingArray.findIndex(d => d.key_identifier === draggedDeskKey);
-            const targetIdx = workingArray.findIndex(d => d.key_identifier === targetKeyIdentifier);
-            
-            const [movedDesk] = workingArray.splice(draggedIdx, 1);
-            workingArray.splice(targetIdx, 0, movedDesk);
-            
-            const updates = workingArray.map((desk, idx) => {
-                return _supabaseClient
-                    .from('desks')
-                    .update({ display_order: idx + 1 })
-                    .eq('id', desk.id);
-            });
-
-            await Promise.all(updates);
-            loadSystemState(); // Force immediate local sync after reordering is committed
-        }
-        draggedDeskKey = null;
-    }
-
-    // 6. Audio Synthesizer Controls
-    function playNotificationSound() {
-        try {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            if (!AudioContext) return;
-            const ctx = new AudioContext();
-            const now = ctx.currentTime;
-            
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(587.33, now); 
-            osc.frequency.setValueAtTime(880.00, now + 0.12); 
-            
-            gain.gain.setValueAtTime(2, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-            
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            
-            osc.start(now);
-            osc.stop(now + 0.6);
-        } catch (e) {
-            console.error("Audio engine context notice.", e);
-        }
-    }
-
-    function announceAudio(label, prefix, num, limit) {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const numStr = pad(num, limit);
-            const spacedNumber = numStr.split('').join(' ');
-            const speech = new SpeechSynthesisUtterance(`Now serving ticket ${prefix} ${spacedNumber} at ${label}`);
-            speech.rate = 0.9; 
-            window.speechSynthesis.speak(speech);
-        }
-    }
-
-    function labelByKey(keyIdentifier) {
-        let target = localDesksCache.find(d => d.key_identifier === keyIdentifier);
-        return target ? target.name : 'Desk';
-    }
-
-    // 7. TV Display Window Orchestration
-    function launchCustomerWindow() {
-        const config = "width=1300,height=850,top=40,left=40,menubar=no,toolbar=no";
-        customerWindow = window.open("", "CustomerDisplayWindow", config);
-        
-        customerWindow.document.write(`
-            <html><head><title>Lobby Display</title>
-            <style>
-                ${document.getElementsByTagName('style')[0].innerHTML}
-                .swal2-popup.attention-popup {
-                    border: 1vh solid #3b82f6 !important;
-                    border-radius: 5vh !important;
-                    box-shadow: 0 50px 100px -20px rgba(15, 23, 42, 0.2) !important;
-                    margin: 2.5vh !important;
-                }
-                .attention-content-wrap {
-                    background: #f8fafc;
-                    padding: 4vh;
-                    border-radius: 4vh;
-                    border: 1px solid #e2e8f0;
-                    margin-top: 2vh;
-                }
-                /* Admin Panel File Upload Styles */
-                .dropzone {
-                    border: 2px dashed var(--border-color);
-                    border-radius: 1rem;
-                    padding: 2rem;
-                    text-align: center;
-                    cursor: pointer;
-                    transition: all 0.2s ease;
-                    background-color: var(--bg-card);
-                }
-                .dropzone.drag-over {
-                    border-color: var(--accent-blue);
-                    background-color: rgba(59, 130, 246, 0.1);
-                }
-                .file-input-label {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 0.5rem;
-                    color: var(--text-muted);
-                }
-            </style>
-            <script src="https://unpkg.com/lucide@latest"><\/script>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><\/script>
-            </head>
-            <body class="tv-body">
-                <button class="fs-btn" onclick="toggleFullscreen()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="maximize" aria-hidden="true" class="lucide lucide-maximize w-4 h-4"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg></button>
-                <div class="tv-top" style="align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 2vw;">
-                        <img src="LOGOSTI.png" alt="STI Puerto Princesa Logo" class="main-logo" style="height: 7vh; margin: 0;">
-                        <h1 class="tv-title" style="font-size: 5vh;">NOW SERVING</h1>
-                    </div>
-                    <div style="display: flex; flex-direction: column; align-items: flex-end; margin-right: 2vw;">
-                        <div style="font-size: 1.6vh; color: #64748b; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5vh;">DEVELOPED BY ZERO</div>
-                        <div class="tv-clock" id="liveClock">--:-- AM</div>
-                    </div>
-                </div>
-                <div id="tvMarquee" style="background: #000; color: #fbbf24; height: 3vh; line-height: 3vh; overflow: hidden; white-space: nowrap; font-family: monospace; font-weight: 900; font-size: 2.2vh; border-radius: 12px; border: 2px solid #1e293b; margin-bottom: 1vh; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); display: flex; align-items: center;">
-                    <div id="tvMarqueeText" style="display: inline-block; padding-left: 100%; animation: marquee-scroll 35s linear infinite; flex-shrink: 0;"></div>
-                </div>
-                <div class="tv-rows-wrapper" id="tvTargetRows"></div>
-                <div id="tvFooter" class="tv-footer-slideshow"></div>
-                <script>
-                    function toggleFullscreen() {
-                        if (!document.fullscreenElement) {
-                            document.documentElement.requestFullscreen().catch(err => { alert("Error: " + err.message); });
-                        } else {
-                            if (document.exitFullscreen) document.exitFullscreen();
-                        }
-                    }
-
-                    const slideMessages = [
-                        'Powered by Bay Developers',
-                        'Developed by ZERO Kyu-wing Management System v3.0',
-                        'Follow us on Instagram: @baydevpalawan',
-                        'Join our Discord community',
-                        'Visit our Facebook: Bay Dev Palawan'
-                    ];
-                    let slideIndex = 0;
-                    function updateSlideshow() {
-                        const footerNode = document.getElementById('tvFooter');
-                        if (footerNode) {
-                            footerNode.animate([
-                                { opacity: 1 },
-                                { opacity: 0 }
-                            ], { duration: 500, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
-                                footerNode.innerHTML = slideMessages[slideIndex]; // Changed to innerHTML
-                                footerNode.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, easing: 'ease-in-out', fill: 'forwards' });
-                                slideIndex = (slideIndex + 1) % slideMessages.length;
-                            };
-                        }
-                    }
-                    window.onload = () => {
-                        if (lucide) lucide.createIcons();
-                        updateSlideshow();
-                        setInterval(updateSlideshow, 5000);
-                    };
-                <\/script>
-            </body></html>
-        `);
-        customerWindow.document.close();
-        
-        if(customerWindow) {
-            setInterval(() => {
-                const clockNode = customerWindow.document.getElementById('liveClock');
-                if(clockNode) {
-                    const now = new Date();
-                    clockNode.innerText = now.toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'}) + ' | ' + now.toLocaleTimeString();
-                }
-            }, 1000);
-
-            // Small delay to ensure the window's DOM is ready before injecting dynamic terminal cards
-            setTimeout(() => updateCustomerWindowUI(null), 150);
-        }
-    }
-
-    function updateCustomerWindowUI(activeKey) {
-        if (customerWindow && !customerWindow.closed && customerWindow.document.getElementById('tvTargetRows')) {
-            const container = customerWindow.document.getElementById('tvTargetRows');
-            // Use a property on the customerWindow object to store the timer,
-            // so it's scoped to that window and doesn't conflict with other timers.
-            if (customerWindow._alertDismissTimer) clearTimeout(customerWindow._alertDismissTimer);
-            if(!container) return;
-
-            const marqueeText = customerWindow.document.getElementById('tvMarqueeText');
-            if (marqueeText) marqueeText.innerText = globalTickerText || "Welcome to KYU-WING Management System - Experience Seamless Service - Powered by Bay Developers - Developed by ZERO";
-
-            const displayDesks = localDesksCache.slice(0, 9);
-
-            // Synchronize DOM elements with displayDesks order
-            displayDesks.forEach((d, index) => {
-                let rowNode = customerWindow.document.getElementById(`tv-row-${d.key_identifier}`);
-                const color = d.color || '#3b82f6';
-
-                if (!rowNode) {
-                    const div = customerWindow.document.createElement('div');
-                    div.className = 'tv-row';
-                    div.id = `tv-row-${d.key_identifier}`;
-                    div.style.borderTopColor = color;
-                    div.style.transition = "all 0.5s ease";
-                    div.style.position = "relative";
-                    div.innerHTML = `
-                        <div class="tv-dept" style="text-align: center; min-height: 5vh; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.1; font-size: 1.8vh; font-weight: 900; color: #1e293b; margin-bottom: 0.1vh;">${d.name}</div>
-                        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; min-height: 0;">
-                            <div style="font-size: 1.2vh; font-weight: 900; color: #64748b; letter-spacing: 2px; margin-bottom: 0vh; text-transform: uppercase;">NOW SERVING</div>
-                            <div class="tv-ticket" id="tv-tick-${d.key_identifier}" style="color: ${color}; font-size: 8.5vh; line-height: 1; font-weight: 900; letter-spacing: -2px;">--</div>
-                        </div>
-                        <div style="width: 100%; padding-top: 0.2vh; text-align: center; margin-top: 0vh;">
-                            <div style="font-size: 1vh; font-weight: 800; color: #94a3b8; letter-spacing: 1.5px; text-transform: uppercase;">UP NEXT</div>
-                            <div id="tv-next-${d.key_identifier}" style="font-size: 3.5vh; font-weight: 900; color: #475569; font-variant-numeric: tabular-nums; line-height: 1;">--</div>
-                        </div>`;
-                    container.appendChild(div);
-                    rowNode = div;
-                }
-
-                // Re-order DOM nodes to match displayDesks array
-                if (container.children[index] !== rowNode) {
-                    container.insertBefore(rowNode, container.children[index]);
-                }
-            });
-
-            // Clean up deleted terminals from the TV display
-            Array.from(container.children).forEach(child => {
-                const idKey = child.id.replace('tv-row-', '');
-                if (!displayDesks.find(d => d.key_identifier === idKey)) {
-                    container.removeChild(child);
-                }
-            });
-
-            displayDesks.forEach(d => {
-                const displayNum = `${d.prefix}-${pad(d.serving_number, d.max_loop_limit)}`;
-                let nextVal = d.serving_number + 1;
-                if (nextVal > d.max_loop_limit) nextVal = 1;
-                const displayNext = `${d.prefix}-${pad(nextVal, d.max_loop_limit)}`;
-
-                const ticketNode = customerWindow.document.getElementById(`tv-tick-${d.key_identifier}`);
-                const nextNode = customerWindow.document.getElementById(`tv-next-${d.key_identifier}`);
-                const rowNode = customerWindow.document.getElementById(`tv-row-${d.key_identifier}`);
-                
-                if (ticketNode) ticketNode.innerText = displayNum;
-                if (ticketNode) ticketNode.style.color = d.color;
-                if (nextNode) nextNode.innerText = displayNext;
-                
-                if (rowNode) {
-                    if (d.key_identifier === activeKey) {
-                        rowNode.style.background = `linear-gradient(180deg, #ffffff 0%, ${d.color}20 100%)`;
-                        rowNode.style.borderColor = d.color;
-                        rowNode.style.borderWidth = "6px";
-                        rowNode.style.borderTopWidth = "6vh";
-                        rowNode.style.outline = `12px solid ${d.color}33`;
-                        rowNode.style.boxShadow = `0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 60px 15px ${d.color}40, 0 0 100px 5px ${d.color}20`; // Keep glow during animation
-                        rowNode.style.setProperty('--glow-color', `${d.color}80`);
-                        rowNode.style.transform = "scale(1.03)";
-                        rowNode.style.zIndex = "50";
-                        rowNode.style.outline = "none";
-                        rowNode.classList.remove('tv-pulse-active');
-                        void rowNode.offsetWidth; 
-                        rowNode.classList.add('tv-pulse-active');
-
-                        // Revert back to original look after 5 seconds (matching animation duration)
-                        if (rowNode._revertTimer) clearTimeout(rowNode._revertTimer);
-                        rowNode._revertTimer = setTimeout(() => {
-                            if (rowNode && !customerWindow.closed) {
-                                rowNode.classList.remove('tv-pulse-active');
-                                rowNode.style.background = "#ffffff";
-                                rowNode.style.borderColor = "#e2e8f0";
-                                rowNode.style.borderTopColor = d.color;
-                                rowNode.style.borderWidth = "2px";
-                                rowNode.style.borderTopWidth = "2vh";
-                                rowNode.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)";
-                                rowNode.style.transform = "scale(1)";
-                                rowNode.style.zIndex = "1";
-                                rowNode.style.outline = "none";
-                            }
-                        }, 5000);
-                    } else {
-                        if (rowNode._revertTimer) clearTimeout(rowNode._revertTimer);
-                        rowNode.style.backgroundColor = "#ffffff";
-                        rowNode.style.background = "#ffffff";
-                        rowNode.style.borderColor = "#e2e8f0";
-                        rowNode.style.borderTopColor = d.color;
-                        rowNode.style.borderWidth = "2px";
-                        rowNode.style.outline = "none"; // Explicitly remove outline for non-active cards
-                        rowNode.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)";
-                        rowNode.style.borderTopWidth = "2vh";
-                        rowNode.style.transform = "scale(1)";
-                        rowNode.style.zIndex = "1";
-                        rowNode.classList.remove('tv-pulse-active');
-                    }
-                }
-            });
-
-            // Update TV Alert Display
-            const swal = customerWindow.Swal;
-            if (globalAlertState && globalAlertState.active && (globalAlertState.content || globalAlertState.mediaUrl)) {
-                if (swal) {
-                    // Only trigger or update if content/media changed or not currently visible
-                    const alertSignature = `${globalAlertState.content}|${globalAlertState.mediaUrl}|${globalAlertState.type}`;
-                    if (!swal.isVisible() || customerWindow._lastAlertSignature !== alertSignature) {
-                        customerWindow._lastAlertSignature = alertSignature;
-                        
-                        let textHtml = globalAlertState.content ? `<div style="font-size: 7vh; font-weight: 950; text-transform: uppercase; line-height: 1; letter-spacing: -2px; color: #0f172a; margin-bottom: 4vh;">${globalAlertState.content}</div>` : '';
-                        
-                        let mediaHtml = '';
-                        if (globalAlertState.mediaUrl) {
-                            const mediaStyle = "width:100%; max-height: 55vh; object-fit: contain; border-radius:3vh; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.4);";
-                            if (globalAlertState.type === 'video') {
-                                mediaHtml = `<video src="${globalAlertState.mediaUrl}" autoplay loop muted style="${mediaStyle}"></video>`;
-                            } else {
-                                mediaHtml = `<img src="${globalAlertState.mediaUrl}" style="${mediaStyle}">`;
-                            }
-                        }
-
-                        swal.fire({
-                            title: `
-                                <div style="display: flex; align-items: center; justify-content: center; gap: 2vw; padding-bottom: 1vh; color: #1e40af;">
-                                    <i data-lucide="megaphone" style="width: 6vh; height: 6vh;"></i>
-                                    <span style="font-size: 4.5vh; font-weight: 950; letter-spacing: 0.4em; text-transform: uppercase;">Attention</span>
-                                    <i data-lucide="megaphone" style="width: 6vh; height: 6vh;"></i>
-                                </div>`,
-                            html: `<div class="attention-content-wrap">${textHtml}${mediaHtml}</div>`,
-                            background: '#ffffff',
-                            color: '#0f172a',
-                            showConfirmButton: false,
-                            allowOutsideClick: false,
-                            width: '95vw',
-                            padding: '5vh',
-                            backdrop: 'rgba(0,0,0,0.85)',
-                            customClass: { popup: 'animate-pop-in attention-popup' },
-                            didOpen: () => {
-                                if (customerWindow.lucide) customerWindow.lucide.createIcons();
-                            }
-                        });
-                    }
-                }
-                
-                if (globalAlertState.duration > 0) {
-                    customerWindow._alertDismissTimer = setTimeout(() => {
-                        dismissGlobalAlert(); // Auto-dismiss after duration
-                    }, globalAlertState.duration * 1000);
-                }
-            } else {
-                if (swal && swal.isVisible()) {
-                    swal.close();
-                    customerWindow._lastAlertSignature = null;
-                }
-            }
-
-        }
-    }
-
-    // Initialize file upload/drag-drop listeners
-    document.addEventListener('DOMContentLoaded', () => {
-        const dropzone = document.getElementById('alertMediaDropzone');
-        const fileInput = document.getElementById('alertFileInput');
-        const clearButton = document.getElementById('clearAlertMedia');
-
-        if (fileInput) {
-            fileInput.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) {
-                    handleFileSelection(e.target.files[0]);
-                } else {
-                    clearMediaSelection();
-                }
-            });
-        }
-
-        if (dropzone) {
-            dropzone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                dropzone.classList.add('drag-over');
-            });
-            dropzone.addEventListener('dragleave', (e) => {
-                e.preventDefault();
-                dropzone.classList.remove('drag-over');
-            });
-            dropzone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                dropzone.classList.remove('drag-over');
-                if (e.dataTransfer.files.length > 0) {
-                    handleFileSelection(e.dataTransfer.files[0]);
-                }
-            });
-        }
-        if (clearButton) clearButton.addEventListener('click', clearMediaSelection);
-    });
-
-    // 8. Physical Printers Processing
-    function batchPrintTickets(keyIdentifier) {
-        const desk = localDesksCache.find(d => d.key_identifier === keyIdentifier);
-        if (!desk) return;
-
-        const limit = desk.max_loop_limit;
-        const prefix = desk.prefix;
-        const name = desk.name;
-        
-        let printWindow = window.open('', 'PrintTicketsWindow', 'width=800,height=800');
-        let html = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Batch Print - ${name}</title>
-                <style>
-                    body { font-family: 'Inter', system-ui, sans-serif; margin: 0; padding: 0; background: #fff; }
-                    .page { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(10, 1fr); height: 100vh; box-sizing: border-box; page-break-after: always; }
-                    .ticket { border: 1px dashed #94a3b8; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; page-break-inside: avoid; }
-                    .t-dept { font-size: 10px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 1px; }
-                    .t-num { font-size: 28px; font-weight: 900; margin: 4px 0; color: #0f172a; font-variant-numeric: tabular-nums; }
-                    .t-footer { font-size: 8px; color: #94a3b8; font-weight: 700; }
-                    @media print { @page { margin: 0.5cm; } body { -webkit-print-color-adjust: exact; } .ticket { border: 1px dashed #000; } }
-                </style>
-            </head>
-            <body>
-        `;
-
-        let ticketCount = 0;
-        html += '<div class="page">';
-        for (let i = 1; i <= limit; i++) {
-            if (ticketCount > 0 && ticketCount % 40 === 0) {
-                html += '</div><div class="page">';
-            }
-            const numStr = pad(i, limit);
-            html += `
-                <div class="ticket">
-                    <div class="t-dept">${name}</div>
-                    <div class="t-num">${prefix}-${numStr}</div>
-                    <div class="t-footer">POWERED BY ZERO</div>
-                </div>
-            `;
-            ticketCount++;
-        }
-        html += `</div><script>window.onload = function() { window.print(); }<\/script></body></html>`;
-        printWindow.document.write(html);
-        printWindow.document.close();
-    }
-
-    initTheme();
-    loadSystemState();
-    initRealtimeSync();
-</script>
+    </section>
+
+    <footer class="py-12 px-6 md:px-[8%] border-t border-white/10 text-center">
+        <p class="text-white/60">Bay Developers — Crafting Modern Digital Solutions for Tomorrow. 🚀</p>
+    </footer>
+
+    <!-- Floating CTA -->
+    <a href="#contact" id="floatingCTA" class="fixed bottom-8 right-8 z-[2001] bg-white text-black px-6 py-3 rounded-full font-bold shadow-2xl transition-all duration-500 translate-y-20 opacity-0 pointer-events-none flex items-center gap-2 group hover:bg-white/90">
+        <iconify-icon icon="ph:paper-plane-tilt-bold" class="text-xl group-hover:rotate-12 transition-transform"></iconify-icon>
+        <span>Contact Us</span>
+    </a>
+    <script src="script.js"></script>
 </body>
 </html>
